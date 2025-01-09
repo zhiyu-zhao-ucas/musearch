@@ -52,6 +52,7 @@ mistune==0.8.4
 more-itertools==8.5.0
 multidict==4.7.6
 mypy-extensions==0.4.3
+# numpy
 numpy==1.19.2
 oauthlib==3.1.0
 opt-einsum==3.3.0
@@ -72,7 +73,8 @@ pyparsing==2.4.7
 pytest==6.1.1
 python-dateutil==2.8.1
 pytz==2020.1
-PyYAML==5.4
+# PyYAML==5.4
+PyYAML
 regex==2020.9.27
 requests==2.24.0
 requests-oauthlib==1.3.0
@@ -84,7 +86,8 @@ setuptools==49.6.0
 six==1.15.0
 snowballstemmer==2.0.0
 Sphinx==2.4.4
-sphinx-autodoc-typehints==1.11.0
+sphinx-autodoc-typehints
+# sphinx-autodoc-typehints==1.11.0
 sphinx-rtd-theme==0.5.0
 sphinxcontrib-applehelp==1.0.2
 sphinxcontrib-devhelp==1.0.2
@@ -103,7 +106,8 @@ termcolor==1.1.0
 tf-agents==0.6.0
 threadpoolctl==2.1.0
 toml==0.10.1
-torch==1.6.0
+torch<1.5
+# torch==1.6.0
 tqdm==4.50.0
 typed-ast==1.4.1
 typing-extensions==3.7.4.2
