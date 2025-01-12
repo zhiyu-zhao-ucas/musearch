@@ -2,16 +2,24 @@ import flexs
 from flexs.utils import sequence_utils as s_utils
 import numpy as np
 import torch
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 from flexs.baselines.models.basecnn import BaseCNN
 from pathlib import Path
 import torch.nn.functional as F
 import torch.distributions as dists
 import pandas as pd
+import time
+from datetime import datetime
+import tqdm
+import warnings
 
 
 to_np = lambda x: x.cpu().detach().numpy()
 to_list = lambda x: to_np(x).tolist()
+
+
+def log_show(content):
+    print('\033[33m' + str(content) + '\033[0m')
 
 
 class Encoder(object):
@@ -74,8 +82,11 @@ class GwgPairSampler(torch.nn.Module):
         population_size: int = 15,
         max_iter: int = 400,
         initial_variance: float = 0.2,
+        gibbs_samples: int = 100,
         log_file: Optional[str] = None,
         device: str = 'cpu',
+        verbose: bool = False,
+        landscape: Optional[flexs.Landscape] = None,
     ):
         super().__init__()
 
@@ -95,10 +106,16 @@ class GwgPairSampler(torch.nn.Module):
         self.max_iter = max_iter
         self.initial_variance = initial_variance
         self.round = rounds
-        self.temperature = temperature
+        self.temp = temperature
         self.starting_sequence = starting_sequence
         self.device = device
         self.predictor = self._setup_predictor()
+        self.predictor_tokenizer = Encoder(alphabet)
+        self.num_tokens = len(self.alphabet)
+        self.gibbs_samples = gibbs_samples
+        self._verbose = verbose
+        self.name = 'GwgPairSampler'
+        self.landscape = landscape
         
     def _setup_predictor(self):
         """
@@ -126,7 +143,7 @@ class GwgPairSampler(torch.nn.Module):
         predictor.to(self.device)
         
         # Log model architecture
-        self._log.info(predictor)
+        # self._log.info(predictor)
         return predictor
 
     def tokenize_seqs(self, seqs):
@@ -276,7 +293,10 @@ class GwgPairSampler(torch.nn.Module):
             DataFrame containing accepted mutants and their scores,
             Tensor of accepted mutant sequences
         """
-        all_mutated_scores = self._evaluate_one_hot(mutants)
+        if self.landscape is not None:
+            all_mutated_scores = self.landscape.get_fitness(mutants)
+        else:
+            all_mutated_scores = self._evaluate_one_hot(mutants)
         delta_score = all_mutated_scores - score
 
         accept_mask = self._metropolis_hastings(
@@ -313,7 +333,7 @@ class GwgPairSampler(torch.nn.Module):
             DataFrame of accepted mutant pairs and their scores,
             Overall acceptance rate
         """
-        seqs = batch['sequence']
+        seqs = batch
         #Tokenize
         tokenized_seqs = self.predictor_tokenizer.encode(seqs).to(self.device)
         total_num_seqs = len(tokenized_seqs)
@@ -328,7 +348,10 @@ class GwgPairSampler(torch.nn.Module):
             seq_one_hot = self._make_one_hot(token_seq, differentiable=True)
 
             # Compute base score
-            pred_score = self._evaluate_one_hot(token_seq[None]).item()
+            if self.landscape is not None:
+                pred_score = self.landscape.get_fitness(real_seq)
+            else:
+                pred_score = self._evaluate_one_hot(token_seq[None]).item()
 
             # Construct Gibbs sampler
             sampler = self._gibbs_sampler(seq_one_hot[None]) 
@@ -411,6 +434,7 @@ class GWG(flexs.Explorer):
         self.max_iter = max_iter
         self.initial_variance = initial_variance
         self.log_file = log_file
+        self.name = 'GWG'
     
     def _worker_fn(self, inputs):
         """Worker function for multiprocessing.
@@ -425,10 +449,17 @@ class GWG(flexs.Explorer):
             all_outputs: results of GWG.
         """
         all_candidates, all_acceptance_rates = [], []
-        for batch in inputs:
-            candidates, acceptance_rate = self.model(batch)
-            all_candidates.append(candidates)
-            all_acceptance_rates.append(acceptance_rate)
+        # for batch in inputs:
+        # log_show(f"ggs.py line 447 inputs: {inputs}")
+        candidates, acceptance_rate = self.model(inputs)
+        # log_show(f"ggs.py line 449 candidates: {candidates.columns}")
+        # sort candidates by mutant_score
+        candidates = candidates.drop_duplicates(subset=['mutant_sequence'])
+        candidates = candidates.sort_values(by='mutant_score', ascending=False)
+        candidates = candidates.head(self.sequences_batch_size)
+        candidates.reset_index(drop=True, inplace=True)
+        all_candidates.append(candidates)
+        all_acceptance_rates.append(acceptance_rate)
         return all_candidates, all_acceptance_rates
 
     def propose_sequences(self, measured_sequences):
@@ -441,8 +472,80 @@ class GWG(flexs.Explorer):
         # pass
         all_candidates, _ = list(measured_sequences['sequence']), list(measured_sequences['model_score'])
         for _ in range(self.rounds):
-            all_candidates.append([])
-            for batch in all_candidates[-2]:
-                candidates, acceptance_rate = self._worker_fn(batch)
-                all_candidates[-1].append(candidates)
-        return all_candidates
+            # log_show(f"ggs.py line 462 all_candidates: {all_candidates}")
+            candidates, acceptance_rate = self._worker_fn(all_candidates)
+            # log_show(f"ggs.py line 465 candidates: {candidates}, len(candidates): {len(candidates)}")
+            all_candidates = candidates[0]["mutant_sequence"]
+            all_scores = candidates[0]["mutant_score"]
+        return all_candidates, all_scores
+    
+    def run(
+        self, landscape: flexs.Landscape, verbose: bool = True
+    ) -> Tuple[pd.DataFrame, Dict]:
+        """
+        Run the exporer.
+
+        Args:
+            landscape: Ground truth fitness landscape.
+            verbose: Whether to print output or not.
+
+        """
+        self.model.cost = 0
+
+        # Metadata about run that will be used for logging purposes
+        metadata = {
+            "run_id": datetime.now().strftime("%H:%M:%S-%m/%d/%Y"),
+            "exp_name": self.name,
+            "model_name": self.model.name,
+            "landscape_name": landscape.name,
+            "rounds": self.rounds,
+            "sequences_batch_size": self.sequences_batch_size,
+            "model_queries_per_batch": self.model_queries_per_batch,
+        }
+
+        # Initial sequences and their scores
+        sequences_data = pd.DataFrame(
+            {
+                "sequence": self.starting_sequence,
+                "model_score": np.nan,
+                "true_score": landscape.get_fitness([self.starting_sequence]),
+                "round": 0,
+                "model_cost": self.model.cost,
+                "measurement_cost": 1,
+            }
+        )
+        self._log(sequences_data, metadata, 0, verbose, time.time())
+
+        # For each round, train model on available data, propose sequences,
+        # measure them on the true landscape, add to available data, and repeat.
+        range_iterator = range if verbose else tqdm.trange
+        for r in range_iterator(1, self.rounds + 1):
+            round_start_time = time.time()
+            # self.model.train(
+            #     sequences_data["sequence"].to_numpy(),
+            #     sequences_data["true_score"].to_numpy(),
+            # )
+
+            seqs, preds = self.propose_sequences(sequences_data)
+            true_score = landscape.get_fitness(seqs)
+
+            if len(seqs) > self.sequences_batch_size:
+                warnings.warn(
+                    "Must propose <= `self.sequences_batch_size` sequences per round"
+                )
+
+            sequences_data = sequences_data.append(
+                pd.DataFrame(
+                    {
+                        "sequence": seqs,
+                        "model_score": preds,
+                        "true_score": true_score,
+                        "round": r,
+                        "model_cost": self.model.cost,
+                        "measurement_cost": len(sequences_data) + len(seqs),
+                    }
+                )
+            )
+            self._log(sequences_data, metadata, r, verbose, round_start_time)
+
+        return sequences_data, metadata

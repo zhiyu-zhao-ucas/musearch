@@ -107,6 +107,11 @@ def main(args):
                 model_queries_per_batch=1000,
                 alphabet=alphabet,
             )
+        elif args.method == 'gwg':
+            encoder = flexs.baselines.explorers.Encoder(alphabet)
+            sampler = flexs.baselines.explorers.GwgPairSampler(encoder, 10, sequences_batch_size=10, model_queries_per_batch=10, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
+            return flexs.baselines.explorers.GWG(model=sampler, rounds=10, sequences_batch_size=10, model_queries_per_batch=10, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet)
+
 
 
     results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 500), (100, 5000),(1000, 5000),(1000, 10000)])
