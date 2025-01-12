@@ -9,3 +9,5 @@ from flexs.baselines.explorers.dyna_ppo import DynaPPO, DynaPPOMutative  # noqa:
 from flexs.baselines.explorers.genetic_algorithm import GeneticAlgorithm  # noqa: F401
 from flexs.baselines.explorers.ppo import PPO  # noqa: F401
 from flexs.baselines.explorers.random import Random  # noqa: F401
+from flexs.baselines.explorers.ggs import Encoder  # noqa: F401
+from flexs.baselines.explorers.ggs import GwgPairSampler  # noqa: F401

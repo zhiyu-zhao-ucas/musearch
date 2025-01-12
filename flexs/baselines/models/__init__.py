@@ -14,3 +14,4 @@ from flexs.baselines.models.sklearn_models import (  # noqa: F401
     SklearnClassifier,
     SklearnRegressor,
 )
+from flexs.baselines.models.basecnn import BaseCNN  # noqa: F401
