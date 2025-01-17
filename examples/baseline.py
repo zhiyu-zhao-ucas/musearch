@@ -43,13 +43,14 @@ def main(args):
         alphabet = s_utils.AAS
     else:
         raise ValueError('Unknown landscape')
+    print(f"starting_sequence length: {len(starting_sequence)}")
     def make_explorer(sequences_batch_size, model_queries_per_batch):
         if args.method == 'adalead':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
             return baselines.explorers.Adalead(
                     cnn,
-                    rounds=5,
+                    rounds=10,
                     mu=1,
                     starting_sequence=starting_sequence,
                     sequences_batch_size=sequences_batch_size,
@@ -58,43 +59,48 @@ def main(args):
                     log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
                 )
         elif args.method == 'cmaes':
+            cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
+                num_filters=32, hidden_size=100, loss='MSE')
             return baselines.explorers.CMAES(
-                flexs.LandscapeAsModel(landscape),
-                
+                cnn,
                 population_size=10,
                 max_iter=200,
-                
                 rounds=10,
                 starting_sequence=starting_sequence,
-                sequences_batch_size=100,
-                model_queries_per_batch=1000,
-                alphabet=alphabet
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                alphabet=alphabet,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
             )
         elif args.method == 'dynappo':
+            cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
+                num_filters=32, hidden_size=100, loss='MSE')
             return baselines.explorers.DynaPPO(  # DynaPPO has its own default ensemble model, so don't use CNN
+                    model=cnn,
                     landscape=landscape,
                     env_batch_size=10,
                     num_model_rounds=10,
                     rounds=10,
                     starting_sequence=starting_sequence,
-                    sequences_batch_size=100,
-                    model_queries_per_batch=1000,
+                    sequences_batch_size=sequences_batch_size,
+                    model_queries_per_batch=model_queries_per_batch,
                     alphabet=alphabet,
+                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
                 )
         elif args.method == 'cbas':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
 
             vae = baselines.explorers.VAE(len(starting_sequence), alphabet=alphabet, epochs=10, verbose=False)
-            return baselines.explorers.CBAS(
-                flexs.LandscapeAsModel(landscape),
-                vae,
+            return baselines.explorers.CbAS(
                 cnn,
+                vae,
                 rounds=10,
                 starting_sequence=starting_sequence,
-                sequences_batch_size=100,
-                model_queries_per_batch=1000,
-                alphabet=alphabet
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                alphabet=alphabet,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
             )
         elif args.method == 'BO':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
@@ -103,19 +109,75 @@ def main(args):
                 model=cnn,
                 rounds=10,
                 starting_sequence=starting_sequence,
-                sequences_batch_size=100,
-                model_queries_per_batch=1000,
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
             )
         elif args.method == 'gwg':
             encoder = flexs.baselines.explorers.Encoder(alphabet)
-            sampler = flexs.baselines.explorers.GwgPairSampler(encoder, 10, sequences_batch_size=10, model_queries_per_batch=10, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
-            return flexs.baselines.explorers.GWG(model=sampler, rounds=10, sequences_batch_size=10, model_queries_per_batch=10, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet)
+            sampler = flexs.baselines.explorers.GwgPairSampler(encoder, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
+            return flexs.baselines.explorers.GWG(model=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',)
+        elif args.method == 'dirichlet_ppo':
+            dirichlet_ppo_args = argparse.Namespace(
+                score_threshold=0.5,
+                total_timesteps=30000,
+                horizon=5,
+            )
+            oracle_model = flexs.LandscapeAsModel(landscape)
+            return baselines.explorers.DirichletPPO(
+                args=dirichlet_ppo_args,
+                oracle_model=oracle_model,
+                alphabet=alphabet,
+                starting_sequence=starting_sequence,
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                rounds=10,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_new.csv',
+            )
+        elif args.method == 'dirichlet_ppo_update_starting_sequence':
+            dirichlet_ppo_args = argparse.Namespace(
+                score_threshold=0.5,
+                total_timesteps=30000,
+                horizon=5,
+            )
+            oracle_model = flexs.LandscapeAsModel(landscape)
+            return baselines.explorers.DirichletPPO(
+                args=dirichlet_ppo_args,
+                oracle_model=oracle_model,
+                alphabet=alphabet,
+                starting_sequence=starting_sequence,
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                rounds=10,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_new.csv',
+            )
+        elif args.method == 'test':
+            dirichlet_ppo_args = argparse.Namespace(
+                score_threshold=0.5,
+                total_timesteps=10000,
+                horizon=5,
+            )
+            oracle_model = flexs.LandscapeAsModel(landscape)
+            return baselines.explorers.DirichletPPO(
+                args=dirichlet_ppo_args,
+                oracle_model=oracle_model,
+                alphabet=alphabet,
+                starting_sequence=starting_sequence,
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                rounds=10,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_new.csv',
+            )
+                
 
 
 
-    results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 500), (100, 5000),(1000, 5000),(1000, 10000)])
+    results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 5000)])
+    # results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 500), (100, 5000),(1000, 5000),(1000, 10000)])
     print(results)
+    # with open(f'efficiency/{args.method}/{args.landscape}.json', 'w') as f:
+    #     json.dump(results, f)
 
 
 if __name__ == '__main__':

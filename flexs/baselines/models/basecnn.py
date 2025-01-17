@@ -86,6 +86,7 @@ class BaseCNN(nn.Module):
         self.dropout = nn.Dropout(dropout) # TODO: actually add this to model
         self.input_size = input_size
         self._make_one_hot = make_one_hot
+        self.cost = 0
 
     def forward(self, x):
         #onehotize

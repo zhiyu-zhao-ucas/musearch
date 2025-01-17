@@ -158,6 +158,8 @@ class Explorer(abc.ABC):
                 sequences_data["sequence"].to_numpy(),
                 sequences_data["true_score"].to_numpy(),
             )
+            round_end_time = time.time()
+            print(f"Training time of model: {round_end_time - round_start_time}")
 
             seqs, preds = self.propose_sequences(sequences_data)
             true_score = landscape.get_fitness(seqs)

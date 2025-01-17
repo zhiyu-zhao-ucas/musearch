@@ -27,6 +27,7 @@ from flexs.baselines.explorers.environments.dyna_ppo import (
     DynaPPOEnvironmentMutative as DynaPPOEnvMut,
 )
 from flexs.utils import sequence_utils as s_utils
+import time
 
 
 class DynaPPOEnsemble(flexs.Model):
@@ -252,6 +253,7 @@ class DynaPPO(flexs.Explorer):
     ) -> Tuple[np.ndarray, np.ndarray]:
         """Propose top `sequences_batch_size` sequences for evaluation."""
         replay_buffer_capacity = 10001
+        time_1 = time.time()
         replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
             self.agent.collect_data_spec,
             batch_size=self.env_batch_size,
@@ -268,6 +270,8 @@ class DynaPPO(flexs.Explorer):
             ],
             num_episodes=1,
         )
+        time_2 = time.time()
+        print("Time to create driver: ", time_2 - time_1)
 
         # Experiment-based training round. Each sequence we generate here must be
         # evaluated by the ground truth landscape model. So each sequence we evaluate
@@ -278,11 +282,14 @@ class DynaPPO(flexs.Explorer):
         experiment_based_training_budget = self.sequences_batch_size
         self.tf_env.set_fitness_model_to_gt(True)
         previous_landscape_cost = self.tf_env.landscape.cost
+        time_loop_start = time.time()
         while (
             self.tf_env.landscape.cost - previous_landscape_cost
             < experiment_based_training_budget
         ):
             collect_driver.run()
+        time_loop_end = time.time()
+        print("Time to run landscape: ", time_loop_end - time_loop_start)
 
         trajectories = replay_buffer.gather_all()
         self.agent.train(experience=trajectories)
@@ -292,6 +299,7 @@ class DynaPPO(flexs.Explorer):
         # Model-based training rounds
         self.tf_env.set_fitness_model_to_gt(False)
         previous_model_cost = self.model.cost
+        model_based_train_start = time.time()
         for _ in range(self.num_model_rounds):
             if self.model.cost - previous_model_cost >= self.model_queries_per_batch:
                 break
@@ -305,6 +313,8 @@ class DynaPPO(flexs.Explorer):
             trajectories = replay_buffer.gather_all()
             self.agent.train(experience=trajectories)
             replay_buffer.clear()
+        model_based_train_end = time.time()
+        print("Time to train model: ", model_based_train_end - model_based_train_start)
 
         # We propose the top `self.sequences_batch_size` new sequences we have generated
         sequences = {

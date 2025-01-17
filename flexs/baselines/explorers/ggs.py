@@ -472,9 +472,10 @@ class GWG(flexs.Explorer):
         # pass
         all_candidates, _ = list(measured_sequences['sequence']), list(measured_sequences['model_score'])
         for _ in range(self.rounds):
-            # log_show(f"ggs.py line 462 all_candidates: {all_candidates}")
+            # log_show(f"ggs.py line 462: all_candidates: {all_candidates}")
+            log_show(f"ggs.py line 476: Model cost: {self.model.landscape.cost}")
             candidates, acceptance_rate = self._worker_fn(all_candidates)
-            # log_show(f"ggs.py line 465 candidates: {candidates}, len(candidates): {len(candidates)}")
+            # log_show(f"ggs.py line 465: candidates: {candidates}, len(candidates): {len(candidates)}")
             all_candidates = candidates[0]["mutant_sequence"]
             all_scores = candidates[0]["mutant_score"]
         return all_candidates, all_scores
