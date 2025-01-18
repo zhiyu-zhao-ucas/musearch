@@ -109,3 +109,6 @@ venv.bak/
 
 fluorescence-model/
 cloud/runs/
+*.pt
+events.*
+*.rst

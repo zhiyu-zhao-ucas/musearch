@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 创建新的 tmux session
-tmux new-session -d -s experiments
+tmux new-session -d -s baseline
 
-landscapes=(tf rosetta)
-methods=(adalead cmaes dynappo cbas BO)
+landscapes=(aav gfp rna tf rosetta)
+methods=(adalead_gt cmaes_gt dynappo_gt cbas_gt BO_gt)
 
 window_count=0
 for landscape in "${landscapes[@]}"; do
@@ -19,7 +19,7 @@ for landscape in "${landscapes[@]}"; do
         fi
         
         # 在窗口中运行命令
-        tmux send-keys "conda activate FLEXS" C-m
+        tmux send-keys "conda activate nmi" C-m
         tmux send-keys "python examples/baseline.py --method $method --landscape $landscape" C-m
         
         ((window_count++))

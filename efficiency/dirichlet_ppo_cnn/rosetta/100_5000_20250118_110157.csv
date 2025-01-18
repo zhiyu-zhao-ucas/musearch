@@ -1,0 +1,3 @@
+{"run_id": "11:01:57-01/18/2025", "exp_name": "DirichletPPO", "model_name": "CNN_hidden_size_100_num_filters_32", "landscape_name": "RosettaFolding", "rounds": 10, "sequences_batch_size": 100, "model_queries_per_batch": 5000}
+sequence,model_score,true_score,round,model_cost,measurement_cost
+MTDLVAVWDVALSDGVHKIEFEHGTTSGKRVVYVDGKEEIRKEWMFKLVGKETFYVGAAKTKATINIDAISGFAYEYTLEINGKSLKKYM,,0.26885098,0,0,1

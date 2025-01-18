@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 创建新的 tmux session
-tmux new-session -d -s dirichlet_ppo_protein
+tmux new-session -d -s our
 
 landscapes=(aav gfp rna tf rosetta)
-methods=(test dirichlet_ppo dirichlet_ppo_update_starting_sequence)
+methods=(dirichlet_ppo_cnn dirichlet_ppo)
 
 gpus=(0 1 2 3)
 num_gpus=${#gpus[@]}
@@ -36,4 +36,4 @@ done
 tmux select-window -t 0
 
 # 附加到 session
-tmux attach-session -t dirichlet_ppo_protein
+tmux attach-session -t our
