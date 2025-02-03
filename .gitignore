@@ -112,3 +112,4 @@ cloud/runs/
 *.pt
 events.*
 *.rst
+*.csv

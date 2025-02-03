@@ -43,6 +43,14 @@ def main(args):
         landscape = flexs.landscapes.RosettaFolding(**problem['params'])
         starting_sequence = landscape.wt_pose.sequence()
         alphabet = s_utils.AAS
+    elif args.landscape == 'muformer':
+        landscape = flexs.landscapes.MuformerLandscape()
+        starting_sequence = landscape.starting_sequence
+        seq = "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQEGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEDIPNDERDTTMPAAMATTLRKLNTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFQADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMTERNRQIAEIGASLIKHW"
+        print("-"*50)
+        print(f"fitness: {landscape.get_fitness([seq])}")
+        print("-"*50)
+        alphabet = s_utils.AAS
     else:
         raise ValueError('Unknown landscape')
     print(f"starting_sequence length: {len(starting_sequence)}")
@@ -58,7 +66,7 @@ def main(args):
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
                     alphabet=alphabet,
-                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
                 )
         elif args.method == 'cmaes':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
@@ -72,7 +80,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'dynappo':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
@@ -87,7 +95,7 @@ def main(args):
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
                     alphabet=alphabet,
-                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
                 )
         elif args.method == 'cbas':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
@@ -102,7 +110,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'BO':
             cnn = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
@@ -114,12 +122,15 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
+            
         elif args.method == 'gwg':
             encoder = flexs.baselines.explorers.Encoder(alphabet)
-            sampler = flexs.baselines.explorers.GwgPairSampler(encoder, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
-            return flexs.baselines.explorers.GWG(model=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv',)
+            oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
+                            num_filters=32, hidden_size=100, loss='MSE')
+            sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
+            return flexs.baselines.explorers.GWG(sampler=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
         elif args.method == 'dirichlet_ppo':
             dirichlet_ppo_args = argparse.Namespace(
                 score_threshold=-np.inf,
@@ -134,7 +145,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'dirichlet_ppo_update_starting_sequence':
             dirichlet_ppo_args = argparse.Namespace(
@@ -150,7 +161,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'test':
             dirichlet_ppo_args = argparse.Namespace(
@@ -166,7 +177,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'dirichlet_ppo_cnn':
             dirichlet_ppo_args = argparse.Namespace(
@@ -183,13 +194,13 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'dirichlet_ppo_update_starting_sequence_cnn':
             dirichlet_ppo_args = argparse.Namespace(
                 score_threshold=-np.inf,
                 total_timesteps=30000,
-                horizon=5,
+                horizon=7,
             )
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
@@ -201,12 +212,12 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'test_cnn':
             dirichlet_ppo_args = argparse.Namespace(
                 score_threshold=-np.inf,
-                horizon=5,
+                horizon=3,
             )
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
@@ -218,7 +229,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'adalead_gt':
             model = flexs.LandscapeAsModel(landscape)
@@ -230,7 +241,7 @@ def main(args):
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
                     alphabet=alphabet,
-                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
                 )
         elif args.method == 'cmaes_gt':
             model = flexs.LandscapeAsModel(landscape)
@@ -243,7 +254,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'dynappo_gt':
             model = flexs.LandscapeAsModel(landscape)
@@ -257,7 +268,7 @@ def main(args):
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
                     alphabet=alphabet,
-                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                    log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
                 )
         elif args.method == 'cbas_gt':
             model = flexs.LandscapeAsModel(landscape)
@@ -271,7 +282,7 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'BO_gt':
             model = flexs.LandscapeAsModel(landscape)
@@ -282,13 +293,30 @@ def main(args):
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
                 alphabet=alphabet,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{datetime.datetime.now().strftime("%Y%m%d_%H%M%S")}.csv',
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
+            )
+        elif args.method == 'pex_gt':
+            model = flexs.LandscapeAsModel(landscape)
+            pex_args = argparse.Namespace(
+                num_queries_per_round=sequences_batch_size,
+                num_model_queries_per_round=model_queries_per_batch,
+                batch_size=sequences_batch_size,
+                num_random_mutations=2,
+                frontier_neighbor_size=5,
+            )
+            return baselines.explorers.ProximalExploration(
+                args=pex_args,
+                model=model,
+                rounds=10,
+                alphabet=alphabet,
+                starting_sequence=starting_sequence,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
                 
 
 
 
-    results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 5000)])
+    results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(args.sequences_batch_size, args.model_queries_per_batch)])
     # results = flexs.evaluate.efficiency(landscape, make_explorer, budgets=[(100, 500), (100, 5000),(1000, 5000),(1000, 10000)])
     print(results)
     # with open(f'efficiency/{args.method}/{args.landscape}.json', 'w') as f:
@@ -299,5 +327,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--method', type=str, default='adalead')
     parser.add_argument('--landscape', type=str, default='rna')
+    parser.add_argument('--sequences_batch_size', type=int, default=100)
+    parser.add_argument('--model_queries_per_batch', type=int, default=5000)
+    parser.add_argument('--run', type=str, default=0)
     args = parser.parse_args()
     main(args)

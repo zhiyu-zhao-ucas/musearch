@@ -1,3 +1,0 @@
-{"run_id": "13:41:14-01/18/2025", "exp_name": "DirichletPPO", "model_name": "LandscapeAsModel=AdditiveAAVPackaging_phenotype=blood", "landscape_name": "AdditiveAAVPackaging_phenotype=blood", "rounds": 10, "sequences_batch_size": 100, "model_queries_per_batch": 5000}
-sequence,model_score,true_score,round,model_cost,measurement_cost
-PSGTTTQSRLQFSQAGASDIRDQSRNWLPGPCYRQQRVSKTSADNNNSEYSWTGATKYHLNGRDSLVNPGPAMASHKDDEEKFFPQSGVL,,0.5,0,0,1
