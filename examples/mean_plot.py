@@ -118,6 +118,9 @@ if __name__ == '__main__':
 
                         rounds = data['round'].unique()
                         max_per_round = cumulative_max_per_round(data)
+                        # check whether max_per_round including nan
+                        if np.isnan(max_per_round).any():
+                            print(f"nan in {file_name}")
                         max_per_rounds.append(max_per_round)
                 try:
                     print(f"lens: {min([len(max_per_round) for max_per_round in max_per_rounds])}")

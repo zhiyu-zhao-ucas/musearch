@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 创建新的 tmux session
-tmux new-session -d -s mu_freq_10
+tmux new-session -d -s mu
 
 landscapes=(muformer)
-methods=(dirichlet_ppo)
+methods=(gwg_gt)
 
 gpus=(0 1 2 3)
 num_gpus=${#gpus[@]}
@@ -31,7 +31,7 @@ for landscape in "${landscapes[@]}"; do
             tmux send-keys "export CUDA_VISIBLE_DEVICES=$current_gpu" C-m
             tmux send-keys "echo 'Using GPU $current_gpu for $window_name'" C-m
             # 添加随机种子以确保每次运行都不同
-            tmux send-keys "python examples/baseline.py --method $method --landscape $landscape --run freq_10_$run" C-m
+            tmux send-keys "python examples/baseline.py --method $method --landscape $landscape --run $run" C-m
             
             ((window_count++))
         done
@@ -42,4 +42,4 @@ done
 tmux select-window -t 0
 
 # 附加到 session
-tmux attach-session -t mu_freq_10
+tmux attach-session -t mu
