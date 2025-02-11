@@ -84,13 +84,13 @@ if __name__ == '__main__':
             plt.figure(dpi=300)
             plt.title(f'Performance with respect to {sequences_batch_size} and {model_queries_per_batch} on {landscape}')
             if args.cnn:
-                method_list = ['adalead', 'cmaes', 'BO', 'cbas', 'dynappo', 'dirichlet_ppo_cnn', 'pex', 'gwg']
+                method_list = ['adalead', 'cmaes', 'BO', 'cbas', 'dynappo', 'dirichlet_ppo_cnn', 'pex', 'gwg', 'evoplay']
                 # method_list = ['adalead', 'cmaes', 'BO', 'cbas', 'dynappo', 'dirichlet_ppo_cnn']
                 # method_list = ['adalead', 'cbas', 'cmaes', 'dynappo', 'BO']
                 dirichlet_ppo_list = ['dirichlet_ppo_cnn']
                 # dirichlet_ppo_list = ['dirichlet_ppo_cnn']
             else:
-                method_list = ['adalead_gt', 'cmaes_gt', 'cbas_gt', 'dynappo_gt', 'BO_gt', 'dirichlet_ppo', 'pex_gt']
+                method_list = ['adalead_gt', 'cmaes_gt', 'cbas_gt', 'dynappo_gt', 'BO_gt', 'dirichlet_ppo', 'pex_gt', 'evoplay_gt']
                 # dirichlet_ppo_list = []
                 dirichlet_ppo_list = ['dirichlet_ppo']
             for method in method_list:
@@ -131,6 +131,8 @@ if __name__ == '__main__':
                     print(f"rounds: {rounds}, min_len: {min_len}")
                     max_per_rounds = np.array([max_per_round[:min_len] for max_per_round in max_per_rounds])
                     max_per_round = np.mean(max_per_rounds, axis=0)
+                    max_per_round_std = np.std(max_per_rounds, axis=0)
+                    print(f"max_per_round[-1]: {max_per_round[-1]}, max_per_round_std[-1]: {max_per_round_std[-1]}")
                     plt.plot(rounds, max_per_round, '-o', label=f'{method}')
                 except Exception as e:
                     print(file_name)
