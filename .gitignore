@@ -123,3 +123,5 @@ docs*.pt
 *.png
 *.csv
 *.json
+paper_code
+.github
