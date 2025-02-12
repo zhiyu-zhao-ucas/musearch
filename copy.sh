@@ -1,0 +1,1 @@
+rsync -auvzP ~/code/FLEXS/ ~/blob/v-zhaozhiyu/code/FLEXS/ --exclude "*.git" --exclude "efficiency" --exclude "efficiency_trash" --exclude "fluorescence-model" --exclude "./examples/fluorescence-model" --exclude "logs" --exclude "restore" --exclude "paper_code"

@@ -145,7 +145,7 @@ def main(args):
                 start_seq=starting_sequence,
                 alphabet=alphabet,
                 model=model,
-                trust_radius=3,
+                trust_radius=10,
                 args=evoplay_args,
             )
 
@@ -219,23 +219,6 @@ def main(args):
                 score_threshold=-np.inf,
                 total_timesteps=30000,
                 horizon=7,
-            )
-            oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
-                         num_filters=32, hidden_size=100, loss='MSE')
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
-                oracle_model=oracle_model,
-                alphabet=alphabet,
-                starting_sequence=starting_sequence,
-                sequences_batch_size=sequences_batch_size,
-                model_queries_per_batch=model_queries_per_batch,
-                rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
-            )
-        elif args.method == 'test_cnn':
-            dirichlet_ppo_args = argparse.Namespace(
-                score_threshold=-np.inf,
-                horizon=3,
             )
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
@@ -336,6 +319,22 @@ def main(args):
             oracle_model = model
             sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
             return flexs.baselines.explorers.GWG(sampler=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
+        elif args.method == 'evoplay_gt':
+            evoplay_args = argparse.Namespace(
+                rounds=10,
+                num_queries_per_round=sequences_batch_size,
+                batch_size=sequences_batch_size,
+                starting_sequence=starting_sequence,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
+            )
+            model = flexs.LandscapeAsModel(landscape)
+            return baselines.explorers.Evoplay(
+                start_seq=starting_sequence,
+                alphabet=alphabet,
+                model=model,
+                trust_radius=10,
+                args=evoplay_args,
+            )
         else:
             raise ValueError('Unknown method')
                 

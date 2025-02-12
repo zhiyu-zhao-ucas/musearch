@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # 创建新的 tmux session
-tmux new-session -d -s gwg
+tmux new-session -d -s evoplay
 
 landscapes=(gfp tf aav rosetta rna)
 # landscapes=(muformer)
-methods=(gwg)
+methods=(evoplay)
 # methods=(pex_gt)
 # methods=(adalead cmaes BO dynappo cbas)
 # methods=(adalead cmaes dynappo cbas BO dirichlet_ppo_cnn)
@@ -47,4 +47,4 @@ done
 tmux select-window -t 0
 
 # 附加到 session
-tmux attach-session -t gwg
+tmux attach-session -t evoplay

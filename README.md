@@ -1,6 +1,6 @@
-![FLEXS Logo](LOGO.png)
+<!-- ![FLEXS Logo](LOGO.png) -->
 
-[![build status](https://github.com/samsinai/FLEXS/workflows/build/badge.svg)](https://github.com/samsinai/FLEXS/actions) [![Documentation Status](https://readthedocs.org/projects/flexs/badge/?version=latest)](https://flexs.readthedocs.io/en/latest/?badge=latest) [![PyPI package](https://img.shields.io/pypi/v/flexs)](https://pypi.org/project/flexs/)
+<!-- [![build status](https://github.com/samsinai/FLEXS/workflows/build/badge.svg)](https://github.com/samsinai/FLEXS/actions) [![Documentation Status](https://readthedocs.org/projects/flexs/badge/?version=latest)](https://flexs.readthedocs.io/en/latest/?badge=latest) [![PyPI package](https://img.shields.io/pypi/v/flexs)](https://pypi.org/project/flexs/)
 
 💪 FLEXS is an open-source simulation environment that enables you to develop and compare model-guided biological sequence design algorithms. This project was developed with support from [Dyno Therapeutics](https://www.dynotx.com).
 
@@ -12,13 +12,32 @@
   - [Ground truth landscapes](#ground-truth-landscapes)
   - [Noisy oracles](#noisy-oracles)
   - [Exploration algorithms](#exploration-algorithms)
-     - [Bring your own explorer](#bring-your-own-explorer) 
+     - [Bring your own explorer](#bring-your-own-explorer)  -->
+
+# $\mu$ Search
 
 
 
 ## Installation
 
-FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
+1. Clone this repository.
+1. Following the installation instructions of FLEXS.
+1. Install the optional dependencies for PyRosetta and ViennaRNA.
+```bash
+$ conda install -c bioconda viennarna
+$ pip install pyrosetta-installer 
+
+$ python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
+```
+1. Install dependencies for $\mu$ Search
+```bash
+$ bash initialization.sh
+```
+1. Install the dependencies for $\mu$ Former
+```bash
+$ pip install -r requirements.txt
+```
+<!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
 There are two optional, but very useful dependencies, [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) (for RNA binding landscapes) and [PyRosetta](http://www.pyrosetta.org) (for protein design landscapes). These can both be installed with conda:
 ```bash
@@ -29,10 +48,10 @@ Note that PyRosetta requires a commercial license if not being used for academic
 
 IMPORTANT: ViennaRNA seems to have issues with Python 3.8, so try to run in a Python 3.5>=, <=3.7 environment.
 
-If contributing or running paper code/experiments, we recommend that you install the dependencies for the sandbox in a conda virtual environment. You can initialize a new Python 3.7 environement with `conda env create --name {env_name} python=3.7`. Then install the local version of `flexs` with `pip install -e .` in the root directory.
+If contributing or running paper code/experiments, we recommend that you install the dependencies for the sandbox in a conda virtual environment. You can initialize a new Python 3.7 environement with `conda env create --name {env_name} python=3.7`. Then install the local version of `flexs` with `pip install -e .` in the root directory. -->
 
 
-## Overview
+<!-- ## Overview
 
 Biological sequence design through machine-guided directed evolution has been of increasing interest. This process often involves two closely connected steps:
   * Models `f` that attempt to learn the ground truth sequence to function relationship `g(x) = y`. 
@@ -292,4 +311,4 @@ Adaptations of the following RL algorithms.
 ```	
 #### Bayesian Optimization 
 
-- [Evolutionary/Enumerative BO](flexs/baselines/explorers/bo.py): Bayesian optimization with sparse sampling of the mutation space. A fully enumerated (when possible) is also implemented mutation space.
+- [Evolutionary/Enumerative BO](flexs/baselines/explorers/bo.py): Bayesian optimization with sparse sampling of the mutation space. A fully enumerated (when possible) is also implemented mutation space. -->

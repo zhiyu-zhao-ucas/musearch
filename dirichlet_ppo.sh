@@ -4,7 +4,7 @@
 tmux new-session -d -s cnn_freq_3
 
 landscapes=(rna)
-methods=(dirichlet_ppo_cnn)
+methods=(dirichlet_ppo)
 
 gpus=(0 1 2 3)
 num_gpus=${#gpus[@]}

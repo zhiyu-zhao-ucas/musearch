@@ -119,3 +119,7 @@ efficiency
 docs*.pt
 *.bin
 *.pth
+*.pdf
+*.png
+*.csv
+*.json

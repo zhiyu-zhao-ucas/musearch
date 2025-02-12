@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 创建新的 tmux session
-tmux new-session -d -s mu
+tmux new-session -d -s mu_other
 
 landscapes=(muformer)
-methods=(gwg_gt)
+methods=(gwg_gt dynappo_gt dirichlet_ppo)
 
 gpus=(0 1 2 3)
 num_gpus=${#gpus[@]}
@@ -42,4 +42,4 @@ done
 tmux select-window -t 0
 
 # 附加到 session
-tmux attach-session -t mu
+tmux attach-session -t mu_other
