@@ -109,16 +109,14 @@ venv.bak/
 
 fluorescence-model/
 cloud/runs/
-*.pt
 events.*
 *.rst
 *.csv
 logs/
 efficiency_trash
 efficiency
-docs*.pt
+docs
 *.bin
-*.pth
 *.pdf
 *.png
 *.csv

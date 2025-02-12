@@ -129,3 +129,4 @@ dirichlet_ppo.sh
 copy.sh
 output.png
 output.txt
+*.md
