@@ -113,3 +113,9 @@ cloud/runs/
 events.*
 *.rst
 *.csv
+logs/
+efficiency_trash
+efficiency
+docs*.pt
+*.bin
+*.pth
