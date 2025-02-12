@@ -22,29 +22,40 @@
 
 1. Clone this repository.
 1. Following the installation instructions of FLEXS.
-```bash
-cd src/flexs
-pip install -e .
-```
+
+    ```bash
+    cd src/flexs
+    pip install -e .
+    ```
+
 1. Install the optional dependencies for PyRosetta and ViennaRNA.
-```bash
-conda install -c bioconda viennarna -y
-pip install pyrosetta-installer
-python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
-```
+
+    ```bash
+    conda install -c bioconda viennarna -y
+    pip install pyrosetta-installer
+    python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
+    ```
+
 1. Install dependencies for $\mu$ Search
-```bash
-conda install -c conda-forge tape_proteins=0.5 -y
-pip install -r requirements.txt -i https://pypi.python.org/simple/
-pip install -r src/flexs/flexs/landscapes/landscape/muformer/muformer_landscape/requirements.txt
-cd src/flexs/flexs/baselines/explorers/stable_baselines3
-cd stable_baselines3
-pip install -r requirements.txt
-pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
-```
+
+    ```bash
+    conda install -c conda-forge tape_proteins=0.5 -y
+    pip install -r requirements.txt -i https://pypi.python.org/simple/
+    pip install -r src/flexs/flexs/landscapes/landscape/muformer/muformer_landscape/requirements.txt
+    cd src/flexs/flexs/baselines/explorers/stable_baselines3
+    cd stable_baselines3
+    pip install -r requirements.txt
+    pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
+    ```
+
 1. Install the dependencies for $\mu$ Former
-```bash
-pip install -r requirements.txt
+    ```bash
+    pip install -r requirements.txt
+    ```
+1. Download the $\mu$ Former model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
+## Running the experiments
+```python
+python examples/baseline.py --method {method} --landscape {landscape}
 ```
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
