@@ -273,12 +273,12 @@ class TrainPipeline():
         previous_cost = self.seq_env.model.cost
         for i in range(self.game_batch_num):
             if self.seq_env.model.cost - previous_cost > model_queries_per_batch:
-                print(f"Exceeded model queries per batch: {model_queries_per_batch}")
+                # print(f"Exceeded model queries per batch: {model_queries_per_batch}")
                 break
             # print(f"\033[93mevoplay.py 267 enter collect_selfplay_data, current i: {i}\033[0m")
             self.collect_selfplay_data(self.play_batch_size)
-            print("batch i:{}, episode_len:{}".format(
-                    i+1, self.episode_len))
+            # print("batch i:{}, episode_len:{}".format(
+                    # i+1, self.episode_len))
             # print(f"\033[93mevoplay.py 271 exit collect_selfplay_data, current i: {i}\033[0m")
             # if self.retrain_flag and self.part<=10:
             #     print('train predictor again')

@@ -119,7 +119,6 @@ docs
 *.bin
 *.pdf
 *.png
-*.csv
 *.json
 paper_code
 .github
