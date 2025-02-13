@@ -124,7 +124,24 @@ def main(args):
                 alphabet=alphabet,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
-            
+        elif args.method == 'pex':
+            model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
+                            num_filters=32, hidden_size=100, loss='MSE')
+            pex_args = argparse.Namespace(
+                num_queries_per_round=sequences_batch_size,
+                num_model_queries_per_round=model_queries_per_batch,
+                batch_size=sequences_batch_size,
+                num_random_mutations=2,
+                frontier_neighbor_size=5,
+            )
+            return baselines.explorers.ProximalExploration(
+                args=pex_args,
+                model=model,
+                rounds=10,
+                alphabet=alphabet,
+                starting_sequence=starting_sequence,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
+            )
         elif args.method == 'gwg':
             encoder = flexs.baselines.explorers.Encoder(alphabet)
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
