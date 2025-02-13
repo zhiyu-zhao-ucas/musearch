@@ -144,7 +144,7 @@ class CbAS(flexs.Explorer):
         original_weights = self.generator.vae.get_weights()
         generator_0.vae.set_weights(original_weights)
         load_end = time.time()
-        print(f"Loading time: {load_end - load_start}")
+        # print(f"Loading time: {load_end - load_start}")
         vae_0 = generator_0.vae
 
         sequences = {}
@@ -160,7 +160,7 @@ class CbAS(flexs.Explorer):
                 all_samples_and_weights[1],
             )
             generator_end = time.time()
-            print(f"Generator time: {generator_end - generator_start}")
+            # print(f"Generator time: {generator_end - generator_start}")
 
             # calculate the scores of the new samples using the model
             scores = self.model.get_fitness(proposals)
@@ -179,7 +179,7 @@ class CbAS(flexs.Explorer):
                 )
                 log_probs_t = self.generator.calculate_log_probability(proposals)
                 get_log_probs_end = time.time()
-                print(f"Get log probs time: {get_log_probs_end - get_log_probs_start}")
+                # print(f"Get log probs time: {get_log_probs_end - get_log_probs_start}")
 
                 weights = np.exp(log_probs_0 - log_probs_t)
                 weights = np.nan_to_num(weights)
@@ -202,7 +202,7 @@ class CbAS(flexs.Explorer):
                 all_samples_and_weights[0], all_samples_and_weights[1]
             )
             generator_train_end = time.time()
-            print(f"Generator train time: {generator_train_end - generator_train_start}")
+            # print(f"Generator train time: {generator_train_end - generator_train_start}")
 
             sequences.update(zip(proposals, scores))
 
