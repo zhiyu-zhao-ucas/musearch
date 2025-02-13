@@ -151,8 +151,8 @@ class MuformerLandscape(flexs.Landscape):
         class Args:
             def __init__(self):
                 self.decoder_name = 'mono'
-                self.pretrained_model = '/home/v-zhaozhiyu/code/FLEXS/src/flexs/flexs/landscapes/landscape/muformer/ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt'
-                self.muformer_model = '/home/v-zhaozhiyu/code/FLEXS/src/flexs/flexs/landscapes/landscape/muformer/muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt'
+                self.pretrained_model = 'src/flexs/flexs/landscapes/landscape/muformer/ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt'
+                self.muformer_model = 'src/flexs/flexs/landscapes/landscape/muformer/muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt'
                 self.device = "cuda:0"
 
         args = Args()
@@ -178,7 +178,7 @@ class MuformerLandscape(flexs.Landscape):
         print(f"Landscape initialization: Loading Muformer model from {args.muformer_model}")
         self.WT_fitness = self.get_fitness([self.starting_sequence], normalize=False)
         print(f"WT fitness: {self.WT_fitness}")
-        esbl_file_path = "/home/v-zhaozhiyu/blob/guoqing/code/0906/DARWIN/RL/landscape/muformer/muformer_landscape/esbl_sequences.csv"
+        esbl_file_path = "src/flexs/flexs/landscapes/landscape/muformer/muformer_landscape/esbl_sequences.csv"
         esbl_sequences = pd.read_csv(esbl_file_path)["sequence"]
         print(f"Number of ESBL sequences: {len(esbl_sequences)}")
         ESBL_fitness = self.get_fitness(esbl_sequences, normalize=False)

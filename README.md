@@ -22,21 +22,62 @@
 
 1. Clone this repository.
 1. Following the installation instructions of FLEXS.
-1. Install the optional dependencies for PyRosetta and ViennaRNA.
-```bash
-$ conda install -c bioconda viennarna
-$ pip install pyrosetta-installer 
 
-$ python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
-```
+    ```bash
+    cd src/flexs
+    pip install -e .
+    ```
+
+1. Install the optional dependencies for PyRosetta and ViennaRNA.
+
+    ```bash
+    conda install -c bioconda viennarna -y
+    pip install pyrosetta-installer
+    python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
+    ```
+
 1. Install dependencies for $\mu$ Search
-```bash
-$ bash initialization.sh
-```
+
+    ```bash
+    conda install -c conda-forge tape_proteins=0.5 -y
+    pip install -r requirements.txt -i https://pypi.python.org/simple/
+    pip install -r src/flexs/flexs/landscapes/landscape/muformer/muformer_landscape/requirements.txt
+    cd src/flexs/flexs/baselines/explorers/stable_baselines3
+    cd stable_baselines3
+    pip install -r requirements.txt
+    pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
+    ```
+
 1. Install the dependencies for $\mu$ Former
+    ```bash
+    pip install -r requirements.txt
+    ```
+1. Download the $\mu$ Former model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
+## Running the experiments
+Supporting the following landscapes:
+- `rna`
+- `gfp`
+- `rosetta`
+- `aav`
+- `tf`
+- `muformer`
+
+Supporting the following methods:
+- `adalead`
+- `cbas`
+- `cmaes`
+- `dynappo`
+- `BO`
+- `gwg`
+- `evoplay`
+- `musearch`
 ```bash
-$ pip install -r requirements.txt
+python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
+All methods require a fitness model to predict the fitness of sequences. If you want to use the fitness model provided by the landscape for method `method` (e.g., `adalead`), you can replace the `metheod` with `method_gt` (e.g., `adalead_gt`).
+
+For `muformer` landscape, we use the `muformer` landscape as the model to provide fitness scores for all methods. For other landscapes, we use a CNN model to provide fitness scores for all methods.
+
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
 There are two optional, but very useful dependencies, [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) (for RNA binding landscapes) and [PyRosetta](http://www.pyrosetta.org) (for protein design landscapes). These can both be installed with conda:

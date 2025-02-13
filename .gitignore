@@ -119,7 +119,12 @@ docs
 *.bin
 *.pdf
 *.png
-*.csv
 *.json
 paper_code
 .github
+examples/mean_plot.py
+examples/efficiency
+examples/efficiency_100_5000.pdf
+examples/robustness
+examples/figs
+*.sh
