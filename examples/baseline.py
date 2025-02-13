@@ -149,14 +149,14 @@ def main(args):
                 args=evoplay_args,
             )
 
-        elif args.method == 'dirichlet_ppo':
-            dirichlet_ppo_args = argparse.Namespace(
+        elif args.method == 'musearch_gt':
+            musearch_args = argparse.Namespace(
                 score_threshold=-np.inf,
                 horizon=5,
             )
             oracle_model = flexs.LandscapeAsModel(landscape)
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
+            return baselines.explorers.MuSearch(
+                args=musearch_args,
                 oracle_model=oracle_model,
                 alphabet=alphabet,
                 starting_sequence=starting_sequence,
@@ -165,65 +165,15 @@ def main(args):
                 rounds=10,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
-        elif args.method == 'dirichlet_ppo_update_starting_sequence':
-            dirichlet_ppo_args = argparse.Namespace(
-                score_threshold=-np.inf,
-                horizon=5,
-            )
-            oracle_model = flexs.LandscapeAsModel(landscape)
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
-                oracle_model=oracle_model,
-                alphabet=alphabet,
-                starting_sequence=starting_sequence,
-                sequences_batch_size=sequences_batch_size,
-                model_queries_per_batch=model_queries_per_batch,
-                rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
-            )
-        elif args.method == 'test':
-            dirichlet_ppo_args = argparse.Namespace(
-                score_threshold=-np.inf,
-                horizon=5,
-            )
-            oracle_model = flexs.LandscapeAsModel(landscape)
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
-                oracle_model=oracle_model,
-                alphabet=alphabet,
-                starting_sequence=starting_sequence,
-                sequences_batch_size=sequences_batch_size,
-                model_queries_per_batch=model_queries_per_batch,
-                rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
-            )
-        elif args.method == 'dirichlet_ppo_cnn':
-            dirichlet_ppo_args = argparse.Namespace(
+        elif args.method == 'musearch':
+            musearch_args = argparse.Namespace(
                 score_threshold=-np.inf,
                 horizon=5,
             )
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                          num_filters=32, hidden_size=100, loss='MSE')
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
-                oracle_model=oracle_model,
-                alphabet=alphabet,
-                starting_sequence=starting_sequence,
-                sequences_batch_size=sequences_batch_size,
-                model_queries_per_batch=model_queries_per_batch,
-                rounds=10,
-                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
-            )
-        elif args.method == 'dirichlet_ppo_update_starting_sequence_cnn':
-            dirichlet_ppo_args = argparse.Namespace(
-                score_threshold=-np.inf,
-                total_timesteps=30000,
-                horizon=7,
-            )
-            oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
-                         num_filters=32, hidden_size=100, loss='MSE')
-            return baselines.explorers.DirichletPPO(
-                args=dirichlet_ppo_args,
+            return baselines.explorers.MuSearch(
+                args=musearch_args,
                 oracle_model=oracle_model,
                 alphabet=alphabet,
                 starting_sequence=starting_sequence,

@@ -17,7 +17,7 @@ from flexs.baselines.explorers.random import Random  # noqa: F401
 from flexs.baselines.explorers.ggs import Encoder  # noqa: F401
 from flexs.baselines.explorers.ggs import GwgPairSampler  # noqa: F401
 from flexs.baselines.explorers.ggs import GWG  # noqa: F401
-from flexs.baselines.explorers.dirichlet_ppo import DirichletPPO  # noqa: F401
+from flexs.baselines.explorers.dirichlet_ppo import MuSearch  # noqa: F401
 from flexs.baselines.explorers.pex import ProximalExploration # noqa: F401
 from flexs.baselines.explorers.evoplay import Evoplay # noqa: F401
 

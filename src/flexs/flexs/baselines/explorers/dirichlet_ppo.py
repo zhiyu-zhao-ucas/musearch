@@ -7,11 +7,11 @@ from flexs import baselines
 
 
 # @register_algorithm("dirichlet_ppo")
-class DirichletPPO(flexs.Explorer):
+class MuSearch(flexs.Explorer):
     """ PPO-based Protein Optimization with Dirichlet Sampling. """
     def __init__(self, args, oracle_model, alphabet, starting_sequence, sequences_batch_size, model_queries_per_batch, rounds, log_file=None, update_frequency=3):
         model = oracle_model
-        name = "DirichletPPO"
+        name = "MuSearch"
         super().__init__(
             model,
             name,
@@ -30,7 +30,7 @@ class DirichletPPO(flexs.Explorer):
         self.horizon = args.horizon
 
     def propose_sequences(self, input_sequences):
-        print("-----------------DirichletPPO-----------------")
+        print("-----------------MuSearch-----------------")
         print(f"input_sequences", input_sequences)
         # input_sequence is a pandas dataframe
         # There is a column named model_score in the dataframe
@@ -49,7 +49,7 @@ class DirichletPPO(flexs.Explorer):
                         'sub_step_action_spaces1': example_env.action_space1,
                         'sub_step_action_spaces2': example_env.action_space2,
                     })
-        print("-----------------DirichletPPO-----------------")
+        print("-----------------MuSearch-----------------")
         print(f"num_envs", rl_agent.env.num_envs)
         exploration_candidate_pool, sampling_candidate_pool = rl_agent.learn(self.total_timesteps)
         print("Total sample sequence num: ", len(exploration_candidate_pool))
