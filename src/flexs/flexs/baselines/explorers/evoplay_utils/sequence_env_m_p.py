@@ -104,7 +104,7 @@ class Seq_env(object):
             inputs = inputs.permute(0, 2, 1)
 
             inputs_string = one_hot_to_string(self._state, self.alphabet)
-            print("sequence_env_m_p.py 105 inputs_string: ", inputs_string)
+            # print("sequence_env_m_p.py 105 inputs_string: ", inputs_string)
             outputs = self.model.get_fitness([inputs_string])
 
             outputs = outputs.squeeze()
@@ -368,8 +368,7 @@ class Mutate(object):
             # elif move or move == 0:
             #     print(f"\033[93mAvailable move: {move}\033[0m")
             end = self.Seq_env.mutation_end()
-            # if end:
-            if end or move == []:
+            if end:
 
                 mutater.reset_Mutater()
                 if is_shown:

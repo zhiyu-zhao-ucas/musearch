@@ -126,7 +126,7 @@ def main(args):
             )
         elif args.method == 'pex':
             model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
-                            num_filters=32, hidden_size=100, loss='MSE')
+                         num_filters=32, hidden_size=100, loss='MSE')
             pex_args = argparse.Namespace(
                 num_queries_per_round=sequences_batch_size,
                 num_model_queries_per_round=model_queries_per_batch,

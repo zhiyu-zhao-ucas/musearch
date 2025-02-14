@@ -24,7 +24,7 @@ editdistance==0.5.3
 flake8==3.8.4
 flake8-black==0.2.1
 flake8-docstrings==1.5.0
--e git+https://github.com/samsinai/FLEXS.git@2e4a5a18234fed6d0f401cab45ef424ac9737632#egg=flexs
+# -e git+https://github.com/samsinai/FLEXS.git@2e4a5a18234fed6d0f401cab45ef424ac9737632#egg=flexs
 future==0.18.2
 gast==0.3.3
 gin-config==0.3.0
@@ -52,8 +52,8 @@ mistune==0.8.4
 more-itertools==8.5.0
 multidict==4.7.6
 mypy-extensions==0.4.3
-# numpy
-numpy==1.19.2
+numpy
+# numpy==1.19.2
 oauthlib==3.1.0
 opt-einsum==3.3.0
 packaging==20.4
