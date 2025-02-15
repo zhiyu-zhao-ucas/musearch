@@ -146,7 +146,7 @@ def main(args):
             encoder = flexs.baselines.explorers.Encoder(alphabet)
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                             num_filters=32, hidden_size=100, loss='MSE')
-            sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
+            sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
             return flexs.baselines.explorers.GWG(sampler=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
         elif args.method == 'evoplay':
             evoplay_args = argparse.Namespace(

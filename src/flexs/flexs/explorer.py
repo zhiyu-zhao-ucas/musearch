@@ -60,6 +60,7 @@ class Explorer(abc.ABC):
 
         self.log_file = log_file
         if self.log_file is not None:
+            print(f"Logging to {self.log_file}")
             dir_path, filename = os.path.split(self.log_file)
             os.makedirs(dir_path, exist_ok=True)
 

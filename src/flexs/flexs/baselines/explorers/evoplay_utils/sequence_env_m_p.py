@@ -368,7 +368,7 @@ class Mutate(object):
             # elif move or move == 0:
             #     print(f"\033[93mAvailable move: {move}\033[0m")
             end = self.Seq_env.mutation_end()
-            if end:
+            if end or move == []:
 
                 mutater.reset_Mutater()
                 if is_shown:

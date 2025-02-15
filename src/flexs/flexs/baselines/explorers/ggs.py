@@ -462,6 +462,15 @@ class GWG(flexs.Explorer):
         self.log_file = log_file
         self.name = 'GWG'
         self.cost = 0
+        super().__init__(
+            self.model,
+            self.name,
+            rounds,
+            sequences_batch_size,
+            model_queries_per_batch,
+            starting_sequence,
+            log_file,
+        )
     
     def _worker_fn(self, inputs):
         """Worker function for multiprocessing.
@@ -517,10 +526,11 @@ class GWG(flexs.Explorer):
             for idx, score in zip(nan_indices, new_scores):
                 all_scores_list[idx] = score
         # log_show(f"ggs.py line 502 measured_sequences: {measured_sequences}")
+        previous_model_cost = self.sampler.cost
         for _ in range(self.rounds):
             # log_show(f"ggs.py line 504: round: {_}")
             # log_show(f"ggs.py line 462: all_candidates: {all_candidates}")
-            if self.sampler.cost >= self.model_queries_per_batch:
+            if self.sampler.cost - previous_model_cost >= self.model_queries_per_batch:
                 print("Exceeded model queries per batch!")
                 break
             candidates, acceptance_rate = self._worker_fn(all_candidates)
