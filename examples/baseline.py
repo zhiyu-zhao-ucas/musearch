@@ -169,7 +169,7 @@ def main(args):
         elif args.method == 'musearch_gt':
             musearch_args = argparse.Namespace(
                 score_threshold=-np.inf,
-                horizon=5,
+                horizon=7,
             )
             oracle_model = flexs.LandscapeAsModel(landscape)
             return baselines.explorers.MuSearch(
