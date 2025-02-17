@@ -37,7 +37,7 @@
     python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
     ```
 
-1. Install dependencies for $\mu$ Search
+1. Install dependencies for MuSearch
 
     ```bash
     conda install -c conda-forge tape_proteins=0.5 -y
