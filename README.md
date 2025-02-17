@@ -70,9 +70,9 @@ Supporting the following methods:
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
-All methods require a fitness model to predict the fitness of sequences. If you want to use the fitness model provided by the landscape for method `method` (e.g., `adalead`), you can replace the `metheod` with `method_gt` (e.g., `adalead_gt`).
+All methods require a fitness model to predict the fitness of sequences in silico. If you want to use a fitness model that is identical to the underlying fitness landscape for a specific `method` (e.g., `adalead`), you can replace the method's name with its corresponding _gt variant (e.g., switch from `adalead` to `adalead_gt`). Otherwise, by default, a CNN model will be used to predict fitness scores in silico.
 
-For `muformer` landscape, we use the `muformer` landscape as the model to provide fitness scores for all methods. For other landscapes, we use a CNN model to provide fitness scores for all methods.
+For the muformer landscape, the `muformer` model is used to provide fitness scores for all methods.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
