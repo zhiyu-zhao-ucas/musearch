@@ -14,7 +14,7 @@
   - [Exploration algorithms](#exploration-algorithms)
      - [Bring your own explorer](#bring-your-own-explorer)  -->
 
-# $\mu$ Search
+# $\mu$Search
 
 
 
