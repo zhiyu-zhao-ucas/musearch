@@ -3,6 +3,7 @@ import random
 from typing import List, Union
 
 import numpy as np
+from copy import deepcopy
 
 AAS = "ILVAGMFYWEDQNHCRKSTP"
 """str: Amino acid alphabet for proteins (length 20 - no stop codon)."""
@@ -80,12 +81,34 @@ def generate_single_mutants(wt: str, alphabet: str) -> List[str]:
     return sequences
 
 
+def generate_random_n_points_mutants(sequence: str, n: int, alphabet: str) -> List[str]:
+    """
+    First select n random points in the sequence, then randomly mutate each point. Return the mutant sequence which has n points mutated.
+
+    Args:
+        sequence: Sequence to mutate.
+        n: Number of points to mutate.
+        alphabet: Alphabet string.
+
+    Returns:
+        n points mutated sequence.
+
+    """
+    sequences_to_mutate = list(deepcopy(sequence))
+    # select n points
+    points = random.sample(range(len(sequence)), n)
+    # mutate each point
+    for i in points:
+        sequences_to_mutate[i] = random.choice(alphabet)
+    sequences_to_mutate = "".join(sequences_to_mutate)
+    return sequences_to_mutate
+
+
 def generate_random_sequences(length: int, number: int, alphabet: str) -> List[str]:
     """Generate random sequences of particular length."""
     return [
         "".join([random.choice(alphabet) for _ in range(length)]) for _ in range(number)
     ]
-
 
 def generate_random_mutant(sequence: str, mu: float, alphabet: str) -> str:
     """

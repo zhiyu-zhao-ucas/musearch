@@ -169,7 +169,7 @@ def main(args):
         elif args.method == 'musearch_gt':
             musearch_args = argparse.Namespace(
                 score_threshold=-np.inf,
-                horizon=7,
+                horizon=5,
             )
             oracle_model = flexs.LandscapeAsModel(landscape)
             return baselines.explorers.MuSearch(
@@ -301,6 +301,18 @@ def main(args):
                 model=model,
                 trust_radius=10,
                 args=evoplay_args,
+            )
+        elif args.method == 'pure_random':
+            model = flexs.LandscapeAsModel(landscape)
+            return baselines.explorers.PureRandom(
+                alphabet=alphabet,
+                model=model,
+                n=5,
+                rounds=10,
+                starting_sequence=starting_sequence,
+                sequences_batch_size=sequences_batch_size,
+                model_queries_per_batch=model_queries_per_batch,
+                log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         else:
             raise ValueError('Unknown method')

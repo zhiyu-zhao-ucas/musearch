@@ -128,3 +128,4 @@ examples/efficiency_100_5000.pdf
 examples/robustness
 examples/figs
 *.sh
+examples/all_plot.py

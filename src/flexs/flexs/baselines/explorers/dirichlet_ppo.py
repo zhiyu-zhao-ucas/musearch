@@ -42,7 +42,7 @@ class MuSearch(flexs.Explorer):
         env = env_fn()
         example_env = env_fn()
         n_steps= self.horizon * self.num_trajs_per_update
-        rl_agent = PPO(["MlpPolicy", "MlpPolicy"], env, verbose=1, n_steps=n_steps, for_protein=True, score_threshold=self.score_threshold, tensorboard_log="./logs",
+        rl_agent = PPO(["MlpPolicy", "MlpPolicy"], env, batch_size=512, verbose=1, n_steps=n_steps, for_protein=True, score_threshold=self.score_threshold, tensorboard_log="./logs",
         policy_kwargs={
                         'sub_step_observation_spaces1': example_env.observation_space1,
                         'sub_step_observation_spaces2': example_env.observation_space2,

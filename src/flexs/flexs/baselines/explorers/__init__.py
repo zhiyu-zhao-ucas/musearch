@@ -20,4 +20,5 @@ from flexs.baselines.explorers.ggs import GWG  # noqa: F401
 from flexs.baselines.explorers.dirichlet_ppo import MuSearch  # noqa: F401
 from flexs.baselines.explorers.pex import ProximalExploration # noqa: F401
 from flexs.baselines.explorers.evoplay import Evoplay # noqa: F401
+from flexs.baselines.explorers.pure_random import PureRandom # noqa: F401
 

@@ -70,6 +70,10 @@ Supporting the following methods:
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
+e.g.,
+```bash
+python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
+```
 All methods require a fitness model to predict the fitness of sequences in silico. If you want to use a fitness model that is identical to the underlying fitness landscape for a specific `method` (e.g., `adalead`), you can replace the method's name with its corresponding _gt variant (e.g., switch from `adalead` to `adalead_gt`). Otherwise, by default, a CNN model will be used to predict fitness scores in silico.
 
 For the muformer landscape, the `muformer` model is used to provide fitness scores for all methods.
