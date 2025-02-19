@@ -75,7 +75,8 @@ For example, if we use `μSearch` as the sequence design method, and use `μForm
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
 ```
 
-In a typical multi-round experimental screening setting, the simulated environment comprises an expensive-to-query round-truth oracle in silico, a local approximate fitness model (a CNN model by default) trained on samples from this oracle, and an advanced sequence design algorithm. 
+In a typical multi-round experimental screening setting, the simulated environment comprises an expensive-to-query round-truth oracle in silico, a local approximate fitness model (a CNN model by default) trained on samples from this oracle, and an advanced sequence design algorithm.
+
 For the single-round setting, we use the underlying fitness landscape oracle as the local fitness model by switching from `musearch` to `musearch_gt`.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
