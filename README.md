@@ -81,6 +81,11 @@ In a multi-round experimental screening setting, the simulated environment consi
 
 In a single-round setting, we switch from `musearch` to `musearch_gt` to use the oracle directly as the local fitness landscape model.
 
+
+## Acknowledgements
+
+μSearch codebase is based on the FLEXS framework, which is available at https://github.com/samsinai/FLEXS.
+
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
 There are two optional, but very useful dependencies, [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) (for RNA binding landscapes) and [PyRosetta](http://www.pyrosetta.org) (for protein design landscapes). These can both be installed with conda:
