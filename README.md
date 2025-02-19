@@ -77,7 +77,7 @@ For example, if you choose μSearch as the sequence design method and μFormer a
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
 ```
 
-In a multi-round experimental screening setting, the simulated environment consists of an expensive-to-query ground-truth fitness landscape oracle in silico, a local approximate fitness landscape model (a CNN model by default) trained on samples from this oracle, and a sequence design algorithm.
+In a multi-round experimental screening setting, the simulated environment consists of (1) an expensive-to-query ground-truth fitness landscape oracle in silico, (2) a local approximate fitness landscape model (a CNN model by default) trained on samples from the oracle, and (3) a specific sequence design algorithm.
 
 In a single-round setting, we switch from `musearch` to `musearch_gt` to use the oracle directly as the local fitness landscape model.
 
