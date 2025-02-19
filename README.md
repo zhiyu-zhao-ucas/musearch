@@ -56,7 +56,7 @@ Supporting the following landscapes:
 - `rosetta`
 - `aav`
 - `tf`
-- `μFormer`
+- `muformer` (μFormer)
 
 Supporting the following methods:
 - `adalead`
@@ -66,18 +66,18 @@ Supporting the following methods:
 - `BO`
 - `gwg`
 - `evoplay`
-- `μSearch`
+- `musearch` (μSearch)
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
-For example, if we use `μSearch` as the sequence design method, and use `μFormer`as the trained fitness landscape model.
+For example, if you choose μSearch as the sequence design method and μFormer as the underlying fitness landscape oracle in a single-round setting, you can use the command:
 ```bash
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
 ```
 
-In a multi-round experimental screening setting, the simulated environment comprises an expensive-to-query ground-truth fitness landscape oracle in silico, a local approximate fitness landscape model (a CNN model by default) trained on samples from the oracle, and a sequence design algorithm.
+In a multi-round experimental screening setting, the simulated environment consists of an expensive-to-query ground-truth fitness landscape oracle in silico, a local approximate fitness landscape model (a CNN model by default) trained on samples from this oracle, and a sequence design algorithm.
 
-In a single-round setting, we use the underlying fitness landscape oracle as the local fitness model by switching from `musearch` to `musearch_gt`.
+In a single-round setting, the underlying fitness landscape oracle is directly used as the local fitness model by switching from `musearch` to `musearch_gt`.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
