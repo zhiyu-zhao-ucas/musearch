@@ -67,6 +67,8 @@ Supporting the following methods:
 - `gwg`
 - `evoplay`
 - `musearch` (μSearch)
+
+To run the sequence design experiment, use the following command:
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
