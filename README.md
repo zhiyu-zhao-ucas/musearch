@@ -49,7 +49,7 @@
     cd -
     ```
 1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
-## Running the experiments
+## Running sequence design experiments
 Supporting the following landscapes:
 1. `rna`
 2. `gfp`
