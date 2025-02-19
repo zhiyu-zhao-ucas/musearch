@@ -84,7 +84,7 @@ In a single-round setting, we switch from `musearch` to `musearch_gt` to use the
 
 ## Acknowledgements
 
-μSearch codebase is based on the FLEXS framework, which is available at https://github.com/samsinai/FLEXS.
+μSearch codebase is built upon the FLEXS framework, which is available at https://github.com/samsinai/FLEXS.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
