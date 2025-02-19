@@ -22,7 +22,7 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
 
 ## Environment
 
-1. Clone this repository
+1. Clone this repository.
 1. Following the installation instructions of FLEXS.
 
     ```bash
@@ -39,7 +39,7 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
     python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
     ```
 
-1. Install dependencies for μSearch
+1. Install dependencies for μSearch.
 
     ```bash
     conda install -c conda-forge tape_proteins=0.5 -y
