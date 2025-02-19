@@ -18,7 +18,7 @@
 
 ## Introduction
 
-The folder contains the code for μSearch, also referred to as MuSearch for readability. It is a reinforcement learning-based sequence design tool to efficiently explore protein fitness landscapes. When combined with μFormer, this framework can identify impactful mutations across a vast protein sequence space, providing a robust and efficient approach for protein optimization.
+The folder contains the code for μSearch, also referred to as MuSearch for readability. It is a reinforcement learning-based sequence design tool for navigating protein fitness landscapes. When combined with μFormer, this framework can identify impactful mutations across a vast protein sequence space, providing a robust and efficient approach for protein optimization.
 
 ## Environment
 
