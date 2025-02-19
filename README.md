@@ -51,22 +51,22 @@
 1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
 ## Running the experiments
 Supporting the following landscapes:
-- `rna`
-- `gfp`
-- `rosetta`
-- `aav`
-- `tf`
-- `muformer` (μFormer)
+1. `rna`
+2. `gfp`
+3. `rosetta`
+4. `aav`
+5. `tf`
+6. `muformer` (μFormer)
 
 Supporting the following methods:
-- `adalead`
-- `cbas`
-- `cmaes`
-- `dynappo`
-- `BO`
-- `gwg`
-- `evoplay`
-- `musearch` (μSearch)
+1. `adalead`
+2. `cbas`
+3. `cmaes`
+4. `dynappo`
+5. `BO`
+6. `gwg`
+7. `evoplay`
+8. `musearch` (μSearch)
 
 To run the sequence design experiment, use the following command:
 ```bash
