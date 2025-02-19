@@ -22,7 +22,7 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
 
 ## Environment
 
-1. Clone this repository.
+1. Clone this repository
 1. Following the installation instructions of FLEXS.
 
     ```bash
@@ -87,7 +87,7 @@ In a single-round setup, we switch from `musearch` to `musearch_gt` to use the o
 
 ## Acknowledgements
 
-The μSearch codebase is built upon the [FLEXS framework](https://github.com/samsinai/FLEXS) and the [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3)
+The μSearch codebase is built upon the [FLEXS framework](https://github.com/samsinai/FLEXS) and the [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3).
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
