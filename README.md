@@ -54,22 +54,22 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
    
 ## Getting Started for Biological Sequence Design
 Supporting the following landscapes:
-1. `rna` (RNA landscapes)
-2. `gfp` (GFP fluorescence)
-3. `rosetta` (Rosetta-based design.)
-4. `aav` (AAV Additive Tropism)
-5. `tf` (Transcription factor binding)
-6. `muformer` (μFormer for TEM-1 β-Lactamase)
+1. `rna`
+2. `gfp`
+3. `rosetta`
+4. `aav`
+5. `tf` 
+6. `muformer`
 
 Supporting the following methods:
-1. `adalead` (AdaLead)
-2. `cbas` (CbAS)
-3. `cmaes` (CMA-ES)
-4. `dynappo` (DyNA-PPO)
-5. `BO` (Bayesian Optimization)
-6. `gwg` (GWG)
-7. `evoplay` (Evoplay)
-8. `musearch` (μSearch)
+1. `adalead`
+2. `cbas`
+3. `cmaes`
+4. `dynappo`
+5. `BO` 
+6. `gwg` 
+7. `evoplay` 
+8. `musearch`
 
 To run a sequence design experiment, use the following command:
 ```bash
