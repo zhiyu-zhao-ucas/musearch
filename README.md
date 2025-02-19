@@ -79,7 +79,7 @@ python examples/baseline.py --method musearch_gt --landscape muformer --sequence
 
 In a multi-round experimental screening setting, the simulated environment consists of an expensive-to-query ground-truth fitness landscape oracle in silico, a local approximate fitness landscape model (a CNN model by default) trained on samples from this oracle, and a sequence design algorithm.
 
-In a single-round setting, the underlying fitness landscape oracle is directly used as the local fitness model by switching from `musearch` to `musearch_gt`.
+In a single-round setting, we switch from `musearch` to `musearch_gt` to use the oracle directly as the local fitness landscape model.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
