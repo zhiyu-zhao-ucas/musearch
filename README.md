@@ -59,7 +59,7 @@ Supporting the following landscapes:
 3. `rosetta`
 4. `aav`
 5. `tf` 
-6. `muformer`
+6. `muformer` (μFormer)
 
 Supporting the following methods:
 1. `adalead`
@@ -69,7 +69,7 @@ Supporting the following methods:
 5. `BO` 
 6. `gwg` 
 7. `evoplay` 
-8. `musearch`
+8. `musearch` (μSearch)
 
 To run a sequence design experiment, use the following command:
 ```bash
