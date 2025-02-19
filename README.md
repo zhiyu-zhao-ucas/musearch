@@ -37,7 +37,7 @@
     python -c 'import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()'
     ```
 
-1. Install dependencies for MuSearch
+1. Install dependencies for μSearch
 
     ```bash
     conda install -c conda-forge tape_proteins=0.5 -y
@@ -48,7 +48,7 @@
     pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
     cd -
     ```
-1. Download the $\mu$ Former model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
+1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
 ## Running the experiments
 Supporting the following landscapes:
 - `rna`
@@ -56,7 +56,7 @@ Supporting the following landscapes:
 - `rosetta`
 - `aav`
 - `tf`
-- `muformer`
+- `μformer`
 
 Supporting the following methods:
 - `adalead`
@@ -66,17 +66,17 @@ Supporting the following methods:
 - `BO`
 - `gwg`
 - `evoplay`
-- `musearch`
+- `μSearch`
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
-e.g.,
+For example, if we use `μSearch` as the sequence design method, and use `μFormer`as the trained fitness landscape model.
 ```bash
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
 ```
-All methods require a fitness model to predict the fitness of sequences in silico. If you want to use a fitness model that is identical to the underlying fitness landscape for a specific `method` (e.g., `adalead`), you can replace the method's name with its corresponding _gt variant (e.g., switch from `adalead` to `adalead_gt`). Otherwise, by default, a CNN model will be used to predict fitness scores in silico.
 
-For the muformer landscape, the `muformer` model is used to provide fitness scores for all methods.
+Typically for the multi-round experimental design setting, the simulated environment involves an expensive-to-query round-truth oracle in silico, a local approximate fitness model (a CNN model by default) trained on samples from the oracle, and a sequence design algorithm. 
+For the single-round setting, we directly set the local fitness model as the underlying fitness landscape oracle by switch from `musearch` to `musearch_gt`.
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
