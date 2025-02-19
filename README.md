@@ -49,7 +49,7 @@
     cd -
     ```
 1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
-## Running sequence design experiments
+## Running experiments for Biological Sequence Design
 Supporting the following landscapes:
 1. `rna`
 2. `gfp`
@@ -68,7 +68,7 @@ Supporting the following methods:
 7. `evoplay`
 8. `musearch` (μSearch)
 
-To run the sequence design experiment, use the following command:
+To run a sequence design experiment, use the following command:
 ```bash
 python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
 ```
@@ -84,7 +84,7 @@ In a single-round setting, we switch from `musearch` to `musearch_gt` to use the
 
 ## Acknowledgements
 
-μSearch codebase is built upon the FLEXS framework, which is available at https://github.com/samsinai/FLEXS.
+The μSearch codebase is built upon the {FLEXS framework}(https://github.com/samsinai/FLEXS).
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
