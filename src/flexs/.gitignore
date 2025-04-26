@@ -111,7 +111,6 @@ fluorescence-model/
 cloud/runs/
 *.pt
 *.rst
-*.txt
 *.pdf
 *.png
 *.csv

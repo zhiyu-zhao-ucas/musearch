@@ -73,11 +73,11 @@ Supporting the following methods:
 
 To run a sequence design experiment, use the following command:
 ```bash
-python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --runs {runs} 
+python examples/baseline.py --method {method} --landscape {landscape} --sequences_batch_size {sequences_batch_size} --model_queries_per_batch {model_queries_per_batch} --run {run} 
 ```
 For example, if you choose μSearch as the sequence design method and μFormer as the underlying fitness landscape oracle in a single-round setup, you can use the command:
 ```bash
-python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --runs 1
+python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --run 1
 ```
 
 In a multi-round experimental screening setup, the simulated environment consists of (1) an expensive-to-query ground-truth fitness landscape oracle in silico, (2) a local approximate fitness landscape model (a CNN model by default) trained on samples from the oracle, and (3) a specific sequence design algorithm.

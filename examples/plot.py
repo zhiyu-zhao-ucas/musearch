@@ -75,7 +75,7 @@ if __name__ == '__main__':
     else:
         landscapes = ['muformer']
     for landscape in landscapes:
-        for sequences_batch_size, model_queries_per_batch in [(100, 5000), (1000, 5000)]:
+        for sequences_batch_size, model_queries_per_batch in [(100, 1000)]:
             plt.figure(dpi=300)
             plt.title(f'Performance with respect to {sequences_batch_size} and {model_queries_per_batch} on {landscape}')
             if args.cnn:
@@ -85,23 +85,23 @@ if __name__ == '__main__':
                 # method_list = ['adalead', 'cbas', 'cmaes', 'dynappo', 'BO', 'dirichlet_ppo_cnn']
                 dirichlet_ppo_list = ['dirichlet_ppo_cnn']
             else:
-                method_list = ['adalead_gt', 'cmaes_gt', 'dynappo_gt', 'BO_gt', 'dirichlet_ppo']
+                method_list = ['musearch_gt', 'pure_random']
                 # method_list = ['adalead_gt', 'cbas_gt', 'cmaes_gt', 'dynappo_gt', 'BO_gt', 'dirichlet_ppo']
-                dirichlet_ppo_list = ['dirichlet_ppo']
+                dirichlet_ppo_list = ['musearch_gt']
             for method in method_list:
             # for method in ['adalead_gt', 'cbas_gt', 'cmaes_gt', 'dynappo_gt', 'BO_gt', 'dirichlet_ppo', 'dirichlet_ppo_update_starting_sequence', 'test']:
                 if method in dirichlet_ppo_list:
                 # if method in ['dirichlet_ppo', 'dirichlet_ppo_update_starting_sequence', 'test']:
                     if args.cnn:
-                        file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/FLEXS/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
+                        file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/musearch/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
                         # file_name = f'/home/v-zhaozhiyu/code/FLEXS/efficiency/{method}/{landscape}/{sequences_batch_size}_{model_queries_per_batch}.csv'
                     else:
                         # if method == 'dirichlet_ppo' and landscape == 'rna':
                         #     file_name = f'/home/v-zhaozhiyu/code/FLEXS/efficiency/dirichlet_ppo/rna/100_5000_20250118_094302.csv'
-                        file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/FLEXS/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
+                        file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/musearch/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
                         # file_name = f'/home/v-zhaozhiyu/code/FLEXS/efficiency/{method}/{landscape}/{sequences_batch_size}_{model_queries_per_batch}_new.csv'
                 else:
-                    file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/FLEXS/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
+                    file_name = get_latest_csv(f'/home/v-zhaozhiyu/code/musearch/efficiency/{method}/{landscape}', str(sequences_batch_size)+'_'+str(model_queries_per_batch))
                 with open(file_name) as f:
                     metadata = json.loads(next(f))
                     data = pd.read_csv(f)
