@@ -75,7 +75,7 @@ if __name__ == '__main__':
     else:
         landscapes = ['muformer']
     for landscape in landscapes:
-        for sequences_batch_size, model_queries_per_batch in [(100, 1000)]:
+        for sequences_batch_size, model_queries_per_batch in [(100, 5000)]:
             plt.figure(dpi=300)
             plt.title(f'Performance with respect to {sequences_batch_size} and {model_queries_per_batch} on {landscape}')
             if args.cnn:

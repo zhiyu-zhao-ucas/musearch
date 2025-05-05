@@ -72,14 +72,16 @@ if __name__ == '__main__':
         
     for landscape in landscapes:
         for sequences_batch_size, model_queries_per_batch in [(100, 5000)]:
-            plt.figure(dpi=300)
-            plt.title(f'Performance with respect to {sequences_batch_size} and {model_queries_per_batch} on {landscape}')
+            plt.figure(dpi=300, figsize=(10, 8))
+            # Add top margin to make room for legend
+            plt.subplots_adjust(top=0.85)
+            plt.title(f'Performance on {landscape}', fontweight='bold')
             
             if args.cnn:
                 method_list = ['adalead', 'cmaes', 'dynappo', 'BO', 'dirichlet_ppo_cnn']
                 dirichlet_ppo_list = ['dirichlet_ppo_cnn']
             else:
-                method_list = ['musearch_gt', 'pure_random']
+                method_list = ['musearch_gt', 'pure_random', 'adalead_gt', 'BO_gt', 'cbas_gt', 'evoplay_gt', 'dynappo_gt', 'cmaes_gt', 'cbas_gt']
                 dirichlet_ppo_list = ['musearch_gt']
                 
             for method in method_list:
@@ -91,7 +93,7 @@ if __name__ == '__main__':
                     rounds = np.arange(num_rounds) * 5000
                     
                     # Plot mean line
-                    plt.plot(rounds, mean_values, '-o', label=f'{method}')
+                    plt.plot(rounds, mean_values, '-o', markersize=3, label=f'{method}')
                     
                     # Add standard deviation as shaded region if requested
                     plt.fill_between(rounds, 
@@ -102,9 +104,15 @@ if __name__ == '__main__':
                 except Exception as e:
                     print(f"Error with {method}: {e}")
                 
-            plt.ylabel("Cumulative max (avg across runs)")
-            plt.xlabel("Number of Model Queries")
-            plt.legend()
+            plt.ylabel("Cumulative max (avg across runs)", fontweight='bold')
+            plt.xlabel("Number of Model Queries", fontweight='bold')
+            plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=4)
+            
+            # Add grid to the plot
+            plt.grid(True, linestyle=':', alpha=0.7)
+            
+            # Set tick labels to normal weight (not bold)
+            plt.tick_params(axis='both', which='major', labelsize=10)
             
             # Save figure
             suffix = "_with_std"

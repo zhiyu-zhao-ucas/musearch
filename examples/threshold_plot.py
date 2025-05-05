@@ -9,10 +9,18 @@ import re
 from datetime import datetime
 
 
+WT_fitness = -0.0726749
+ESBL_fitness_median = -0.0646437555551529
+
 def cumulative_max_per_round(sequences):
+    print(f"Calculating cumulative max per round for {len(sequences)} sequences")
     num_rounds = sequences['round'].max() + 1
+    print(f"Number of rounds: {num_rounds}")
+    for r in range(num_rounds):
+        print(f"Round {r}: {sequences['true_score'][sequences['round'] == r].max()}")
     max_per_round = [sequences['true_score'][sequences['round'] == r].max()
                      for r in range(num_rounds)]
+    print(f"Max per round: {max_per_round}")
 
     return np.maximum.accumulate(max_per_round)
 
@@ -86,7 +94,7 @@ def create_threshold_comparison_df(musearch_values, random_values, query_multipl
     
     # Get unique threshold values from musearch_gt's performance
     # We use unique values to avoid redundant rows
-    thresholds = np.linspace(-0.05, 0.1, num=5)
+    thresholds = np.linspace(1.0, 19, num=5)
     # add random_avg.max into thresholds
     thresholds = np.unique(np.concatenate((thresholds, [random_avg.max()])))
     thresholds = np.sort(thresholds)
@@ -99,18 +107,22 @@ def create_threshold_comparison_df(musearch_values, random_values, query_multipl
     for threshold in thresholds:
         # Find first round where each method exceeds the threshold
         musearch_round = np.float16(find_first_round_exceeding_threshold(musearch_avg, threshold))
+        print(f"musearch_avg: {musearch_avg}")
         random_round = np.float16(find_first_round_exceeding_threshold(random_avg, threshold))
+        print(f"random_avg: {random_avg}")
         
         # Convert rounds to queries if multiplier is provided
         musearch_queries = musearch_round * query_multiplier if not np.isnan(musearch_round) else np.nan
         random_queries = random_round * query_multiplier if not np.isnan(random_round) else np.nan
         
         results.append({
-            "Cumulative max": threshold,
-            "musearch_gt min round": musearch_round,
-            "pure_random min round": random_round,
+            "normalized_reward": threshold,
+            "raw_reward": threshold * (ESBL_fitness_median - WT_fitness) + WT_fitness,
+            # "musearch_gt min round": musearch_round,
+            # "pure_random min round": random_round,
             "musearch_gt min queries": musearch_queries,
-            "pure_random min queries": random_queries
+            "pure_random min queries": random_queries,
+            "M/N": random_queries / musearch_queries
         })
     
     # Create DataFrame
@@ -129,7 +141,7 @@ if __name__ == '__main__':
         landscapes = ['muformer']
         
     for landscape in landscapes:
-        for sequences_batch_size, model_queries_per_batch in [(100, 5000)]:
+        for sequences_batch_size, model_queries_per_batch in [(5, 50)]:
             print(f"\nAnalyzing {landscape} with {sequences_batch_size} sequences, {model_queries_per_batch} queries per batch\n")
             
             # Get data for musearch_gt

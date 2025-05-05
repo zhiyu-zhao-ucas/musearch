@@ -122,10 +122,12 @@ docs
 *.json
 paper_code
 .github
-examples/mean_plot.py
+# examples/mean_plot.py
 examples/efficiency
 examples/efficiency_100_5000.pdf
 examples/robustness
 examples/figs
 *.sh
 examples/all_plot.py
+backup
+efficiency copy

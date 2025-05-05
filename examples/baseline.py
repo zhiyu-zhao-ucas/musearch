@@ -14,6 +14,7 @@ import datetime
 
 
 def main(args):
+    print(f"Running {args.method} on {args.landscape} with batch size {args.sequences_batch_size} and model queries per batch {args.model_queries_per_batch}")
     if args.landscape == 'aav':
         problem = flexs.landscapes.additive_aav_packaging.registry()['blood']
         pprint.pprint(problem)
@@ -60,7 +61,7 @@ def main(args):
                          num_filters=32, hidden_size=100, loss='MSE')
             return baselines.explorers.Adalead(
                     cnn,
-                    rounds=60,
+                    rounds=10,
                     mu=1,
                     starting_sequence=starting_sequence,
                     sequences_batch_size=sequences_batch_size,
@@ -75,7 +76,7 @@ def main(args):
                 cnn,
                 population_size=10,
                 max_iter=200,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -90,7 +91,7 @@ def main(args):
                     landscape=landscape,
                     env_batch_size=10,
                     num_model_rounds=10,
-                    rounds=60,
+                    rounds=10,
                     starting_sequence=starting_sequence,
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
@@ -105,7 +106,7 @@ def main(args):
             return baselines.explorers.CbAS(
                 cnn,
                 vae,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -117,7 +118,7 @@ def main(args):
                          num_filters=32, hidden_size=100, loss='MSE')
             return baselines.explorers.BO(
                 model=cnn,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -137,7 +138,7 @@ def main(args):
             return baselines.explorers.ProximalExploration(
                 args=pex_args,
                 model=model,
-                rounds=60,
+                rounds=10,
                 alphabet=alphabet,
                 starting_sequence=starting_sequence,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
@@ -147,10 +148,10 @@ def main(args):
             oracle_model = baselines.models.CNN(len(starting_sequence), alphabet=alphabet,
                             num_filters=32, hidden_size=100, loss='MSE')
             sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
-            return flexs.baselines.explorers.GWG(sampler=sampler, rounds=60, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
+            return flexs.baselines.explorers.GWG(sampler=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
         elif args.method == 'evoplay':
             evoplay_args = argparse.Namespace(
-                rounds=60,
+                rounds=10,
                 num_queries_per_round=sequences_batch_size,
                 batch_size=sequences_batch_size,
                 starting_sequence=starting_sequence,
@@ -179,7 +180,7 @@ def main(args):
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
-                rounds=600,
+                rounds=10,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'musearch':
@@ -196,14 +197,14 @@ def main(args):
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
-                rounds=60,
+                rounds=10,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
             )
         elif args.method == 'adalead_gt':
             model = flexs.LandscapeAsModel(landscape)
             return baselines.explorers.Adalead(
                     model,
-                    rounds=60,
+                    rounds=10,
                     mu=1,
                     starting_sequence=starting_sequence,
                     sequences_batch_size=sequences_batch_size,
@@ -217,7 +218,7 @@ def main(args):
                 model,
                 population_size=10,
                 max_iter=200,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -231,7 +232,7 @@ def main(args):
                     landscape=landscape,
                     env_batch_size=10,
                     num_model_rounds=10,
-                    rounds=60,
+                    rounds=10,
                     starting_sequence=starting_sequence,
                     sequences_batch_size=sequences_batch_size,
                     model_queries_per_batch=model_queries_per_batch,
@@ -245,7 +246,7 @@ def main(args):
             return baselines.explorers.CbAS(
                 model,
                 vae,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -256,7 +257,7 @@ def main(args):
             model = flexs.LandscapeAsModel(landscape)
             return baselines.explorers.BO(
                 model=model,
-                rounds=60,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -275,7 +276,7 @@ def main(args):
             return baselines.explorers.ProximalExploration(
                 args=pex_args,
                 model=model,
-                rounds=60,
+                rounds=10,
                 alphabet=alphabet,
                 starting_sequence=starting_sequence,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',
@@ -285,10 +286,10 @@ def main(args):
             encoder = flexs.baselines.explorers.Encoder(alphabet)
             oracle_model = model
             sampler = flexs.baselines.explorers.GwgPairSampler(oracle_model, 10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/10_10.csv')
-            return flexs.baselines.explorers.GWG(sampler=sampler, rounds=60, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
+            return flexs.baselines.explorers.GWG(sampler=sampler, rounds=10, sequences_batch_size=sequences_batch_size, model_queries_per_batch=model_queries_per_batch, temperature=0.1, starting_sequence=starting_sequence, alphabet=alphabet, log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',)
         elif args.method == 'evoplay_gt':
             evoplay_args = argparse.Namespace(
-                rounds=60,
+                rounds=10,
                 num_queries_per_round=sequences_batch_size,
                 batch_size=sequences_batch_size,
                 starting_sequence=starting_sequence,
@@ -308,7 +309,7 @@ def main(args):
                 alphabet=alphabet,
                 model=model,
                 n=5,
-                rounds=600,
+                rounds=10,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -332,7 +333,7 @@ if __name__ == '__main__':
     parser.add_argument('--method', type=str, default='adalead')
     parser.add_argument('--landscape', type=str, default='rna')
     parser.add_argument('--sequences_batch_size', type=int, default=100)
-    parser.add_argument('--model_queries_per_batch', type=int, default=500)
+    parser.add_argument('--model_queries_per_batch', type=int, default=5000)
     parser.add_argument('--run', type=str, default=0)
     args = parser.parse_args()
     main(args)
