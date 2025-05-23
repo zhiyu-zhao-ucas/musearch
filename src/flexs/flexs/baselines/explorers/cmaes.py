@@ -97,11 +97,13 @@ class CMAES(flexs.Explorer):
 
         # Explore until we reach `self.max_iter` or run out of model queries
         initial_cost = self.model.cost
-        for _ in range(self.max_iter):
+        while True:
+        # for _ in range(self.max_iter):
 
             # Stop exploring if we will run out of model queries
             current_cost = self.model.cost - initial_cost
             if current_cost + self.population_size > self.model_queries_per_batch:
+                print(f"Stopping CMAES because we will run out of model queries. Current cost: {current_cost}, population size: {self.population_size}, model queries per batch: {self.model_queries_per_batch}")
                 break
 
             # `ask_and_eval` generates a new population of sequences

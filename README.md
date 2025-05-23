@@ -89,6 +89,11 @@ In a single-round setup, we switch from `musearch` to `musearch_gt` to use the o
 
 The μSearch codebase is built upon the [FLEXS](https://github.com/samsinai/FLEXS) project and the [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3) project.
 
+-----
+`mean_plot.py` is a script that plots the learning curves of all methods on all landscapes.
+`threshold.py` is a script that plots `muformer` landscapes learning curves with longer run times.
+`threshold_plot.py` is a script that records the number of peaks above a certain threshold for `muformer` landscapes.
+
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
 There are two optional, but very useful dependencies, [ViennaRNA](https://www.tbi.univie.ac.at/RNA/) (for RNA binding landscapes) and [PyRosetta](http://www.pyrosetta.org) (for protein design landscapes). These can both be installed with conda:

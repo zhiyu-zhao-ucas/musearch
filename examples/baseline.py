@@ -218,7 +218,7 @@ def main(args):
                 model,
                 population_size=10,
                 max_iter=200,
-                rounds=10,
+                rounds=60,
                 starting_sequence=starting_sequence,
                 sequences_batch_size=sequences_batch_size,
                 model_queries_per_batch=model_queries_per_batch,
@@ -276,7 +276,7 @@ def main(args):
             return baselines.explorers.ProximalExploration(
                 args=pex_args,
                 model=model,
-                rounds=10,
+                rounds=60,
                 alphabet=alphabet,
                 starting_sequence=starting_sequence,
                 log_file=f'efficiency/{args.method}/{args.landscape}/{sequences_batch_size}_{model_queries_per_batch}_{args.run}.csv',

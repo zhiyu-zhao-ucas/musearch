@@ -144,7 +144,7 @@ def analyze_landscape(landscape, absolute_threshold, sequences_batch_size=100, m
     print(f"Analyzing landscape: {landscape}")
     
     # Method list for muformer (ground truth landscape)
-    method_list = ['pure_random', 'adalead_gt', 'BO_gt', 'musearch_gt', 'cbas_gt', 'evoplay_gt', 'dynappo_gt', 'cmaes_gt', 'gwg_gt']
+    method_list = ['pure_random', 'adalead_gt', 'BO_gt', 'musearch_gt', 'cbas_gt', 'evoplay_gt', 'dynappo_gt', 'cmaes_gt', 'gwg_gt', 'pex_gt']
     
     # Define method name mapping for display
     method_display_names = {
@@ -156,7 +156,8 @@ def analyze_landscape(landscape, absolute_threshold, sequences_batch_size=100, m
         'dynappo_gt': 'DyNA-PPO',
         'evoplay_gt': 'EvoPlay',
         'gwg_gt': 'GWG',
-        'pure_random': 'Random'
+        'pure_random': 'Random',
+        'pex_gt': 'PEX'
     }
     
     # Find max and min fitness for this landscape
@@ -215,9 +216,9 @@ def analyze_landscape(landscape, absolute_threshold, sequences_batch_size=100, m
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--threshold', type=float, default=0.25, 
+    parser.add_argument('--threshold', type=float, default=0.3, 
                         help='Absolute threshold value to count as a peak')
-    parser.add_argument('--max_round', type=int, default=9,
+    parser.add_argument('--max_round', type=int, default=50,
                         help='Maximum round to consider (default: 30)')
     args = parser.parse_args()
     
@@ -249,7 +250,8 @@ if __name__ == '__main__':
             'dynappo_gt': 'DyNA-PPO',
             'evoplay_gt': 'EvoPlay',
             'gwg_gt': 'GWG',
-            'pure_random': 'Random'
+            'pure_random': 'Random',
+            'pex_gt': 'PEX'
         }
         
         # Create a table header with rounds
@@ -345,5 +347,6 @@ if __name__ == '__main__':
         'dynappo_gt': 'DyNA-PPO',
         'evoplay_gt': 'EvoPlay',
         'gwg_gt': 'GWG',
-        'pure_random': 'Random'
+        'pure_random': 'Random',
+        'pex_gt': 'PEX'
     }
