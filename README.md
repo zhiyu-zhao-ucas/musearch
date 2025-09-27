@@ -49,9 +49,11 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
     pip install -r src/flexs/flexs/baselines/explorers/requirements.txt -i https://pypi.python.org/simple/
     cd src/flexs/flexs/baselines/explorers/stable_baselines3
     pip install -e .
-    pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
     cd -
     pip install -r requirements.txt
+    pip install numpy==1.21.5
+    pip install gym==0.21.0
+    pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
     ```
 1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
    
