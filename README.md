@@ -82,7 +82,6 @@ python examples/baseline.py --method {method} --landscape {landscape} --sequence
 ```
 For example, if you choose μSearch as the sequence design method and μFormer as the underlying fitness landscape oracle in a single-round setup, you can use the command:
 ```bash
-python examples/baseline.py --method adalead --landscape rna --sequences_batch_size 100 --model_queries_per_batch 5000 --run 1
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --run 1
 ```
 
