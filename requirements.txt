@@ -52,7 +52,7 @@ mistune==0.8.4
 more-itertools==8.5.0
 multidict==4.7.6
 mypy-extensions==0.4.3
-numpy==1.21.5
+numpy
 # numpy==1.19.2
 oauthlib==3.1.0
 opt-einsum==3.3.0
@@ -105,7 +105,6 @@ termcolor==1.1.0
 tf-agents==0.6.0
 threadpoolctl==2.1.0
 toml==0.10.1
-torch
 tqdm==4.50.0
 typed-ast==1.4.1
 typing-extensions==3.7.4.2
@@ -115,4 +114,3 @@ wheel==0.35.1
 wrapt==1.12.1
 yarl==1.6.0
 zipp==3.3.0
-gym==0.21.0
