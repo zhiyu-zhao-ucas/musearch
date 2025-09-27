@@ -26,6 +26,8 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
 1. Following the installation instructions of FLEXS.
 
     ```bash
+    conda create -n musearch python=3.8 -y
+    conda activate musearch
     pip install -r docs/requirements.txt
     cd src/flexs
     pip install -e .
@@ -93,6 +95,7 @@ The μSearch codebase is built upon the [FLEXS](https://github.com/samsinai/FLEX
 `mean_plot.py` is a script that plots the learning curves of all methods on all landscapes.
 `threshold.py` is a script that plots `muformer` landscapes learning curves with longer run times.
 `threshold_plot.py` is a script that records the number of peaks above a certain threshold for `muformer` landscapes.
+pip freeze > requirements_pin.txt
 
 <!-- FLEXS is available on [PyPI](https://pypi.org/project/flexs/) 🐍 and can be installed with `pip install flexs`.
 
