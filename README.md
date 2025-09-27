@@ -28,9 +28,9 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
     ```bash
     conda create -n musearch python=3.8 -y
     conda activate musearch
-    pip install -r docs/requirements.txt
     cd src/flexs
     pip install -e .
+    cd -
     ```
 
 1. Install the optional dependencies for PyRosetta and ViennaRNA.
@@ -51,6 +51,7 @@ The folder contains the code for μSearch, also referred to as MuSearch for read
     pip install -e .
     pip install torch==1.11.0+cu113 -f https://download.pytorch.org/whl/torch_stable.html
     cd -
+    pip install -r requirements.txt
     ```
 1. Download the μFormer model weights `ur50-pcomb-prot_pmlm_1b-3x16-ckpt-checkpoint_best.pt` and `muformer-l-BLAT_ECOLX_Ranganathan2015_CFX.pt`, and place it in the `src/flexs/flexs/landscapes/landscape/muformer/` directory.
    
@@ -79,6 +80,7 @@ python examples/baseline.py --method {method} --landscape {landscape} --sequence
 ```
 For example, if you choose μSearch as the sequence design method and μFormer as the underlying fitness landscape oracle in a single-round setup, you can use the command:
 ```bash
+python examples/baseline.py --method adalead --landscape rna --sequences_batch_size 100 --model_queries_per_batch 5000 --run 1
 python examples/baseline.py --method musearch_gt --landscape muformer --sequences_batch_size 100 --model_queries_per_batch 5000 --run 1
 ```
 
